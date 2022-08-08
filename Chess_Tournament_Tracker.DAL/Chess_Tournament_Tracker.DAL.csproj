@@ -6,4 +6,12 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Chess_Tournament_Tracker.Models\Chess_Tournament_Tracker.Models.csproj" />
+  </ItemGroup>
+
 </Project>
