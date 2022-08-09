@@ -19,5 +19,9 @@
     <ProjectReference Include="..\Chess_Tournament_Tracker.Models\Chess_Tournament_Tracker.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 
 </Project>
