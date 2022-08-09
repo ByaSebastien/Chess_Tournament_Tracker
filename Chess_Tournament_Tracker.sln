@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32616.157
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chess_Tournament_Tracker.API", "Chess_Tournament_Tracker.API\Chess_Tournament_Tracker.API.csproj", "{B3F28EB0-D8AF-4860-94E7-840386DA3AC6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chess_Tournament_Tracker.API", "Chess_Tournament_Tracker.API\Chess_Tournament_Tracker.API.csproj", "{B3F28EB0-D8AF-4860-94E7-840386DA3AC6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chess_Tournament_Tracker.BLL", "Chess_Tournament_Tracker.BLL\Chess_Tournament_Tracker.BLL.csproj", "{3115D508-3AF2-4CD2-AA77-D4171898AEB2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chess_Tournament_Tracker.BLL", "Chess_Tournament_Tracker.BLL\Chess_Tournament_Tracker.BLL.csproj", "{3115D508-3AF2-4CD2-AA77-D4171898AEB2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chess_Tournament_Tracker.DAL", "Chess_Tournament_Tracker.DAL\Chess_Tournament_Tracker.DAL.csproj", "{07857B40-C625-4964-9BF4-C2D08AA4090C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chess_Tournament_Tracker.DAL", "Chess_Tournament_Tracker.DAL\Chess_Tournament_Tracker.DAL.csproj", "{07857B40-C625-4964-9BF4-C2D08AA4090C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chess_Tournament_Tracker.Models", "Chess_Tournament_Tracker.Models\Chess_Tournament_Tracker.Models.csproj", "{808A300B-61C9-4358-B7A9-0BD2FA73E404}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chess_Tournament_Tracker.Models", "Chess_Tournament_Tracker.Models\Chess_Tournament_Tracker.Models.csproj", "{808A300B-61C9-4358-B7A9-0BD2FA73E404}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chess_Tournament_Tracker.Interfaces", "Chess_Tournament_Tracker.Interfaces\Chess_Tournament_Tracker.Interfaces.csproj", "{CDDDEF47-A648-4902-891D-A1B4A3F5BF05}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chess_Tournament_Tracker.IL", "Chess_Tournament_Tracker.Interfaces\Chess_Tournament_Tracker.IL.csproj", "{CDDDEF47-A648-4902-891D-A1B4A3F5BF05}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chess_Tournament_Tracker.Tools", "Chess_Tournament_Tracker.Tools\Chess_Tournament_Tracker.Tools.csproj", "{113E5B0F-A801-484C-9A39-F64760D4E5C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chess_Tournament_Tracker.Tools", "Chess_Tournament_Tracker.Tools\Chess_Tournament_Tracker.Tools.csproj", "{113E5B0F-A801-484C-9A39-F64760D4E5C1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
