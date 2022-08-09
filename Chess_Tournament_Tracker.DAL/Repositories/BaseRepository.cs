@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Chess_Tournament_Tracker.DAL.Repositories
 {
-    internal class RepositoryBase
+    public class RepositoryBase<TEntity> : IRepository<TEntity>
     {
     }
 }
