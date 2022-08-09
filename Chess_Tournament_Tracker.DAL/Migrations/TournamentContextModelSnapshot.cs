@@ -123,6 +123,36 @@ namespace Chess_Tournament_Tracker.DAL.Migrations
 
                     b.ToTable("Users");
                 });
+
+            modelBuilder.Entity("TournamentUser", b =>
+                {
+                    b.Property<Guid>("TournamentsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UsersId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("TournamentsId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("TournamentUser");
+                });
+
+            modelBuilder.Entity("TournamentUser", b =>
+                {
+                    b.HasOne("Chess_Tournament_Tracker.Models.Entities.Tournament", null)
+                        .WithMany()
+                        .HasForeignKey("TournamentsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Chess_Tournament_Tracker.Models.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
 #pragma warning restore 612, 618
         }
     }
