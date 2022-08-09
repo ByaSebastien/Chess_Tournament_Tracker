@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Chess_Tournament_Tracker.DAL.Migrations
 {
     [DbContext(typeof(TournamentContext))]
-    [Migration("20220809064811_Chess_Tournament_Tracker")]
+    [Migration("20220809083335_Chess_Tournament_Tracker")]
     partial class Chess_Tournament_Tracker
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -124,6 +124,36 @@ namespace Chess_Tournament_Tracker.DAL.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("TournamentUser", b =>
+                {
+                    b.Property<Guid>("TournamentsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UsersId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("TournamentsId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("TournamentUser");
+                });
+
+            modelBuilder.Entity("TournamentUser", b =>
+                {
+                    b.HasOne("Chess_Tournament_Tracker.Models.Entities.Tournament", null)
+                        .WithMany()
+                        .HasForeignKey("TournamentsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Chess_Tournament_Tracker.Models.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

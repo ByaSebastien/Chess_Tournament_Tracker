@@ -18,8 +18,6 @@ namespace Chess_Tournament_Tracker.Models.Entities
         public UserGender Gender { get; set; }
         public int ELO { get; set; } = 1200;
         public bool IsAdmin { get; set; } = false;
-
+        public ICollection<Tournament> Tournaments { get; set; } = new List<Tournament>();
     }
-
-
 }
