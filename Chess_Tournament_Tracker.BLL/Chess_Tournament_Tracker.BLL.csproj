@@ -6,4 +6,12 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Chess_Tournament_Tracker.DAL\Chess_Tournament_Tracker.DAL.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="DTO\Tournament\" />
+  </ItemGroup>
+
 </Project>
