@@ -17,10 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Chess_Tournament_Tracker.DAL\Chess_Tournament_Tracker.DAL.csproj" />
   </ItemGroup>
 

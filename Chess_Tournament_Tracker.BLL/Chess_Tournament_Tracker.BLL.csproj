@@ -6,4 +6,13 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Isopoh.Cryptography.Argon2" Version="1.1.12" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Chess_Tournament_Tracker.DAL\Chess_Tournament_Tracker.DAL.csproj" />
+    <ProjectReference Include="..\Chess_Tournament_Tracker.Models\Chess_Tournament_Tracker.Models.csproj" />
+  </ItemGroup>
+
 </Project>

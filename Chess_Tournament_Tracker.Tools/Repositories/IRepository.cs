@@ -8,10 +8,12 @@ namespace Chess_Tournament_Tracker.Tools.Repositories
 {
     public interface IRepository<TEntity> where TEntity : class
     {
-        public IEnumerable<TEntity> GetAll();
-        public TEntity? GetById(params object[] ids);
-        public TEntity Insert(TEntity entity);
-        public bool Update(TEntity entity);
-        public bool Delete(TEntity entity);
+        bool Any(Func<TEntity, bool> predicate);
+        bool Delete(TEntity entity);
+        IEnumerable<TEntity> FindMany(Func<TEntity, bool>? predicate = null);
+        TEntity FindOne(Func<TEntity, bool> predicate);
+        TEntity? FindOne(params object[] ids);
+        TEntity Insert(TEntity entity);
+        bool Update(TEntity entity);
     }
 }
