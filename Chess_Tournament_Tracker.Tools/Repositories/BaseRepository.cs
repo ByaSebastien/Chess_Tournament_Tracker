@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 
 namespace Chess_Tournament_Tracker.Tools.Repositories
 {
-    public class RepositoryBase<TEntity> : IRepository<TEntity>
-        where TEntity : class
+    public class RepositoryBase<TEntity> : IRepository<TEntity> where TEntity : class
     {
         protected DbContext _dbContext;
         protected DbSet<TEntity> Entities;
@@ -18,15 +17,26 @@ namespace Chess_Tournament_Tracker.Tools.Repositories
             _dbContext = dbContext;
             Entities = _dbContext.Set<TEntity>();
         }
-        public IEnumerable<TEntity> GetAll()
-        {
-            return Entities;
-        }
-
-        public TEntity? GetById(params object[] ids)
+        public TEntity? FindOne(params object[] ids)
         {
             return Entities.Find(ids);
         }
+        public TEntity FindOne(Func<TEntity, bool> predicate)
+        {
+            return Entities.SingleOrDefault(predicate) ?? throw new ArgumentNullException("Not Found");
+        }
+        public IEnumerable<TEntity> FindMany(Func<TEntity, bool>? predicate = null)
+        {
+            if (predicate == null)
+                return Entities;
+            return Entities.Where(predicate);
+        }
+
+        public bool Any(Func<TEntity, bool> predicate)
+        {
+            return Entities.Any(predicate);
+        }
+
 
         public bool Delete(TEntity entity)
         {
@@ -40,13 +50,12 @@ namespace Chess_Tournament_Tracker.Tools.Repositories
             TEntity newEntity = Entities.Add(entity).Entity;
             _dbContext.SaveChanges();
             return newEntity;
-            
         }
 
         public bool Update(TEntity entity)
         {
             Entities.Update(entity);
-            return _dbContext.SaveChanges()==1;
+            return _dbContext.SaveChanges() == 1;
         }
     }
 }
