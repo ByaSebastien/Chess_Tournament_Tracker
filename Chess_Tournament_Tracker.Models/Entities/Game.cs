@@ -14,5 +14,6 @@ namespace Chess_Tournament_Tracker.Models.Entities
         public User White { get; set; } = new User();
         public GameResult Result { get; set; }
         public int Round { get; set; }
+        public Tournament CurrentTournament { get; set; } = new Tournament();
     }
 }

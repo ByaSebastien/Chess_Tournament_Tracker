@@ -11,8 +11,8 @@ namespace Chess_Tournament_Tracker.DAL.Contexts
 {
     public class TournamentContext : DbContext
     {
-        public DbSet<User> Users { get; set; }
-        public DbSet<Tournament> Tournaments { get; set; }
+        public DbSet<User> Users => Set<User>();
+        public DbSet<Tournament> Tournaments => Set<Tournament>();
         public TournamentContext(DbContextOptions options) : base(options)
         {
         }
@@ -21,6 +21,7 @@ namespace Chess_Tournament_Tracker.DAL.Contexts
         {
             builder.ApplyConfiguration(new UserConfiguration());
             builder.ApplyConfiguration(new TournamentConfiguration());
+            builder.ApplyConfiguration(new GameConfiguration());
         }                
     }
 }

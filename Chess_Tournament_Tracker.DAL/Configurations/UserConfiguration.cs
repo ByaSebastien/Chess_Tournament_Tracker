@@ -15,12 +15,8 @@ namespace Chess_Tournament_Tracker.DAL.Configurations
         {
             builder.Property(u => u.Pseudo).HasMaxLength(255);
             builder.HasIndex(u => u.Pseudo).IsUnique();
-
             builder.Property(u => u.Mail).HasMaxLength(255);
             builder.HasIndex(u => u.Mail).IsUnique();
-
-
-
         }
     }
 }

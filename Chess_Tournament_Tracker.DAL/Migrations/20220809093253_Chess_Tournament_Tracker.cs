@@ -55,6 +55,40 @@ namespace Chess_Tournament_Tracker.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Game",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    BlackId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    WhiteId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Result = table.Column<int>(type: "int", nullable: false),
+                    Round = table.Column<int>(type: "int", nullable: false),
+                    CurrentTournamentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Game", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Game_Tournaments_CurrentTournamentId",
+                        column: x => x.CurrentTournamentId,
+                        principalTable: "Tournaments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Game_Users_BlackId",
+                        column: x => x.BlackId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Game_Users_WhiteId",
+                        column: x => x.WhiteId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "TournamentUser",
                 columns: table => new
                 {
@@ -79,6 +113,21 @@ namespace Chess_Tournament_Tracker.DAL.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Game_BlackId",
+                table: "Game",
+                column: "BlackId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Game_CurrentTournamentId",
+                table: "Game",
+                column: "CurrentTournamentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Game_WhiteId",
+                table: "Game",
+                column: "WhiteId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_TournamentUser_UsersId",
                 table: "TournamentUser",
                 column: "UsersId");
@@ -98,6 +147,9 @@ namespace Chess_Tournament_Tracker.DAL.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Game");
+
             migrationBuilder.DropTable(
                 name: "TournamentUser");
 

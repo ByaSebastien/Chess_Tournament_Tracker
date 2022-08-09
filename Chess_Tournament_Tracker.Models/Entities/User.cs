@@ -19,5 +19,7 @@ namespace Chess_Tournament_Tracker.Models.Entities
         public int ELO { get; set; } = 1200;
         public bool IsAdmin { get; set; } = false;
         public ICollection<Tournament> Tournaments { get; set; } = new List<Tournament>();
+        public ICollection<Game> GamesAsWhite { get; set; } = new List<Game>();
+        public ICollection<Game> GamesAsBlack { get; set; } = new List<Game>();
     }
 }

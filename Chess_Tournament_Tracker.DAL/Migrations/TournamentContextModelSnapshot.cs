@@ -22,6 +22,38 @@ namespace Chess_Tournament_Tracker.DAL.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("Chess_Tournament_Tracker.Models.Entities.Game", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("BlackId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CurrentTournamentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Result")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Round")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("WhiteId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BlackId");
+
+                    b.HasIndex("CurrentTournamentId");
+
+                    b.HasIndex("WhiteId");
+
+                    b.ToTable("Game");
+                });
+
             modelBuilder.Entity("Chess_Tournament_Tracker.Models.Entities.Tournament", b =>
                 {
                     b.Property<Guid>("Id")
@@ -139,6 +171,33 @@ namespace Chess_Tournament_Tracker.DAL.Migrations
                     b.ToTable("TournamentUser");
                 });
 
+            modelBuilder.Entity("Chess_Tournament_Tracker.Models.Entities.Game", b =>
+                {
+                    b.HasOne("Chess_Tournament_Tracker.Models.Entities.User", "Black")
+                        .WithMany("GamesAsBlack")
+                        .HasForeignKey("BlackId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Chess_Tournament_Tracker.Models.Entities.Tournament", "CurrentTournament")
+                        .WithMany("Games")
+                        .HasForeignKey("CurrentTournamentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Chess_Tournament_Tracker.Models.Entities.User", "White")
+                        .WithMany("GamesAsWhite")
+                        .HasForeignKey("WhiteId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Black");
+
+                    b.Navigation("CurrentTournament");
+
+                    b.Navigation("White");
+                });
+
             modelBuilder.Entity("TournamentUser", b =>
                 {
                     b.HasOne("Chess_Tournament_Tracker.Models.Entities.Tournament", null)
@@ -152,6 +211,18 @@ namespace Chess_Tournament_Tracker.DAL.Migrations
                         .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Chess_Tournament_Tracker.Models.Entities.Tournament", b =>
+                {
+                    b.Navigation("Games");
+                });
+
+            modelBuilder.Entity("Chess_Tournament_Tracker.Models.Entities.User", b =>
+                {
+                    b.Navigation("GamesAsBlack");
+
+                    b.Navigation("GamesAsWhite");
                 });
 #pragma warning restore 612, 618
         }
