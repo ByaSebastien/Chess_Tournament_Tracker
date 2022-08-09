@@ -24,5 +24,6 @@ namespace Chess_Tournament_Tracker.Models.Entities
         public DateTime CreationDate { get; set; } = DateTime.Now;
         public DateTime UpdateDate { get; set; } = DateTime.Now;
         public ICollection<User> Users { get; set; } = new List<User>();
+        public ICollection<Game> Games { get; set; } = new List<Game>();
     }
 }
