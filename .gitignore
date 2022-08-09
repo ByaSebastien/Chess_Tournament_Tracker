@@ -361,3 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+Chess_Tournament_Trackes.API/appsettings.json
+Chess_Tournament_Trackes.API/appsettings.Development.json
