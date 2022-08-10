@@ -27,10 +27,10 @@ namespace Chess_Tournament_Tracker.BLL.Services
 
         public User GetById(Guid id)
         {
-            return _repository.GetById(id) ?? throw new ArgumentNullException("Not Found");
+            return _repository.FindOne(id) ?? throw new ArgumentNullException("Not Found");
         }
 
-        public User Login(UserLoginDTO loginUser)
+        public User Login(LoginDTO loginUser)
         {
             User user = _repository.FindOne(u => u.Pseudo == loginUser.ConnectionField || u.Mail == loginUser.ConnectionField);
             if (Argon2.Hash(loginUser.Password) == user.Password)
@@ -40,7 +40,7 @@ namespace Chess_Tournament_Tracker.BLL.Services
 
         public User Register(User user)
         {
-            if (_repository.FindAny(u => u.Pseudo == user.Pseudo || u.Mail == user.Mail))
+            if (_repository.Any(u => u.Pseudo == user.Pseudo || u.Mail == user.Mail))
                 throw new ValidationException("Already exist");
             user.Password = Argon2.Hash(user.Password);
             return _repository.Insert(user);

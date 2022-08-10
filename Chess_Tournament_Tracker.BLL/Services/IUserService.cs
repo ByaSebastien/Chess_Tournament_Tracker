@@ -12,7 +12,7 @@ namespace Chess_Tournament_Tracker.BLL.Services
     {
         User GetById(Guid id);
         User Register(User user);
-        User Login(UserLoginDTO user);
+        User Login(LoginDTO user);
         bool Update(User user);
         bool Delete(User user);
     }
