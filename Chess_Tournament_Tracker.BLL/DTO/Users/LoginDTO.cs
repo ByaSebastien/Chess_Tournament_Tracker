@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Chess_Tournament_Tracker.BLL.DTO.Users
 {
-    public class UserLoginDTO
+    public class LoginDTO
     {
         [Required]
         public string ConnectionField { get; set; } = String.Empty;
