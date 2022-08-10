@@ -1,4 +1,5 @@
 ﻿using Chess_Tournament_Tracker.BLL.DTO.Users;
+using Chess_Tournament_Tracker.BLL.Mappers;
 using Chess_Tournament_Tracker.DAL.Repositories;
 using Chess_Tournament_Tracker.Models.Entities;
 using Isopoh.Cryptography.Argon2;
@@ -13,9 +14,9 @@ namespace Chess_Tournament_Tracker.BLL.Services
 {
     public class UserService : IUserService
     {
-        private readonly UserRepository _repository;
+        private readonly IUserRepository _repository;
 
-        public UserService(UserRepository repository)
+        public UserService(IUserRepository repository)
         {
             _repository = repository;
         }
@@ -38,11 +39,15 @@ namespace Chess_Tournament_Tracker.BLL.Services
             throw new UnauthorizedAccessException("Wrong Password");
         }
 
-        public User Register(User user)
+        public User Register(RegisterDTO userRegister)
         {
-            if (_repository.Any(u => u.Pseudo == user.Pseudo || u.Mail == user.Mail))
+            if (_repository.Any(u => u.Pseudo == userRegister.Pseudo || u.Mail == userRegister.Mail))
                 throw new ValidationException("Already exist");
-            user.Password = Argon2.Hash(user.Password);
+            User user = userRegister.ToDAL();
+            user.Id = Guid.NewGuid();
+            user.Salt = Guid.NewGuid();
+            user.Password = Argon2.Hash(userRegister.Password + user.Salt);
+            user.ELO = userRegister.ELO ?? 1200;
             return _repository.Insert(user);
         }
 

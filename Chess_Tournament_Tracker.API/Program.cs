@@ -1,4 +1,7 @@
+using Chess_Tournament_Tracker.BLL.Services;
 using Chess_Tournament_Tracker.DAL.Contexts;
+using Chess_Tournament_Tracker.DAL.Repositories;
+using Chess_Tournament_Tracker.IL.TokenInfrastructures;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,7 +14,17 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<TournamentContext>(o => o.UseSqlServer(builder.Configuration.GetConnectionString("Main")));
+//builder.Services.AddScoped<ITournamentService, TournamentService>();
+//builder.Services.AddScoped<ITournamentRepository, TournamentRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddSingleton<TokenManager>();
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Auth", policy => policy.RequireAuthenticatedUser());
+    options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
