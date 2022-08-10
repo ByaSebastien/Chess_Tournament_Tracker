@@ -48,7 +48,7 @@ namespace Chess_Tournament_Tracker.BLL.Services
 
         public Tournament GetById(Guid id)
         {
-            return _Repository.GetById(id);
+            return _Repository.FindOne(id)?? throw new ArgumentNullException("Not Found");
         }
 
         public bool Update()
