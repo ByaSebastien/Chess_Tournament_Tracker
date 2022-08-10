@@ -10,20 +10,17 @@ namespace Chess_Tournament_Tracker.BLL.Services
 {
     public class TournamentService : ITournamentService
     {
-        ITournamentRepository _Repository;
-        public TournamentService(ITournamentRepository tournamentRepository )
+        private ITournamentRepository _tournamentRepository;
+        private IUserRepository _userRepository;
+        public TournamentService(ITournamentRepository tournamentRepository, IUserRepository userRepository)
         {
-            _Repository = tournamentRepository; 
+            _tournamentRepository = tournamentRepository;
+            _userRepository = userRepository;
         }
 
         public Tournament Add(Tournament tournament)
         {
-            return _Repository.Insert(tournament);
-        }
-
-        public Tournament Add()
-        {
-            throw new NotImplementedException();
+            return _tournamentRepository.Insert(tournament);
         }
 
         public void AddPlayer(Guid UserId)
@@ -33,7 +30,7 @@ namespace Chess_Tournament_Tracker.BLL.Services
 
         public bool Delete(Guid id)
         {
-            return _Repository.Delete(GetById(id));
+            return _tournamentRepository.Delete(GetById(id));
         }
 
         public void DeletePlayer(Guid UserId)
@@ -48,6 +45,7 @@ namespace Chess_Tournament_Tracker.BLL.Services
 
         public Tournament GetById(Guid id)
         {
+            return _tournamentRepository.FindOne(id) ?? throw new ArgumentNullException("Not Found");
         }
 
         public bool Update()

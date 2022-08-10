@@ -1,22 +1,15 @@
 ﻿using Chess_Tournament_Tracker.Models.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Chess_Tournament_Tracker.BLL.Services
 {
     public interface ITournamentService
     {
-        Tournament Add();
-        bool Delete(Guid id);
-        bool Update();
-        Tournament GetById (Guid id);
-        IEnumerable<Tournament> GetAll();
+        Tournament Add(Tournament tournament);
         void AddPlayer(Guid UserId);
+        bool Delete(Guid id);
         void DeletePlayer(Guid UserId);
-        
-
+        IEnumerable<Tournament> GetAll();
+        Tournament GetById(Guid id);
+        bool Update();
     }
 }
