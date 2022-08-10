@@ -1,6 +1,7 @@
 ﻿using Chess_Tournament_Tracker.BLL.DTO.Tournament;
 using Chess_Tournament_Tracker.BLL.Mappers;
 using Chess_Tournament_Tracker.BLL.Services;
+using Chess_Tournament_Tracker.Models.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,6 +29,14 @@ namespace Chess_Tournament_Tracker.API.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+        [HttpDelete]
+
+        public IActionResult Delete(Tournament tournament)
+        {
+            _service.Delete(tournament);
+            return Ok();
+
         }
     }
 }

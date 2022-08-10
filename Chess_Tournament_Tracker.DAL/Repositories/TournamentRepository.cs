@@ -1,4 +1,5 @@
-﻿using Chess_Tournament_Tracker.Models.Entities;
+﻿using Chess_Tournament_Tracker.DAL.Contexts;
+using Chess_Tournament_Tracker.Models.Entities;
 using Chess_Tournament_Tracker.Tools.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -11,7 +12,7 @@ namespace Chess_Tournament_Tracker.DAL.Repositories
 {
     public class TournamentRepository : RepositoryBase<Tournament>,ITournamentRepository
     {
-        public TournamentRepository(DbContext context) : base(context) { }
+        public TournamentRepository(TournamentContext context) : base(context) { }
 
 
     }
