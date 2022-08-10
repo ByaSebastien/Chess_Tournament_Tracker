@@ -1,4 +1,6 @@
-﻿using Chess_Tournament_Tracker.DAL.Repositories;
+﻿using Chess_Tournament_Tracker.BLL.DTO.Tournament;
+using Chess_Tournament_Tracker.BLL.Mappers;
+using Chess_Tournament_Tracker.DAL.Repositories;
 using Chess_Tournament_Tracker.Models.Entities;
 using System;
 using System.Collections.Generic;
@@ -18,9 +20,13 @@ namespace Chess_Tournament_Tracker.BLL.Services
             _userRepository = userRepository;
         }
 
-        public Tournament Add(Tournament tournament)
+        public Tournament Insert(InsertTournamentDTO insertTournament)
         {
+            Tournament tournament = insertTournament.ToDAL();
+            tournament.Id = Guid.NewGuid();
+            tournament.CreationDate = DateTime.Now;
             return _tournamentRepository.Insert(tournament);
+
         }
 
         public void AddPlayer(Guid UserId)

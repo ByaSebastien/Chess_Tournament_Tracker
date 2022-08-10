@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Chess_Tournament_Tracker.BLL\Chess_Tournament_Tracker.BLL.csproj" />
     <ProjectReference Include="..\Chess_Tournament_Tracker.DAL\Chess_Tournament_Tracker.DAL.csproj" />
   </ItemGroup>
 
