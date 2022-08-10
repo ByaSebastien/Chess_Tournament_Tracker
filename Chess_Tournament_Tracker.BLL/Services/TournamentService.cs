@@ -34,8 +34,12 @@ namespace Chess_Tournament_Tracker.BLL.Services
             throw new NotImplementedException();
         }
 
-        public bool Delete(Tournament tournament)
+        public bool Delete(Guid id)
         {
+            Tournament? tournament = _tournamentRepository.FindOne(id);
+
+            if (tournament == null)
+                throw new KeyNotFoundException("Doesnt exist");
             return _tournamentRepository.Delete(tournament);
         }
 

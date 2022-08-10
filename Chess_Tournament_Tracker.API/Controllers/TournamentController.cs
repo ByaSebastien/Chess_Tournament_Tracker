@@ -30,12 +30,18 @@ namespace Chess_Tournament_Tracker.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpDelete]
-
-        public IActionResult Delete(Tournament tournament)
+        [HttpDelete("{id}")]
+        public IActionResult Delete(Guid id)
         {
-            _service.Delete(tournament);
-            return Ok();
+            try
+            {
+                _service.Delete(id);
+                return Ok();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
 
         }
     }
