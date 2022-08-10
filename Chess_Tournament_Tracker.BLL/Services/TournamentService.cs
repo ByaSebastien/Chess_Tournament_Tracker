@@ -34,9 +34,9 @@ namespace Chess_Tournament_Tracker.BLL.Services
             throw new NotImplementedException();
         }
 
-        public bool Delete(Guid id)
+        public bool Delete(Tournament tournament)
         {
-            return _tournamentRepository.Delete(GetById(id));
+            return _tournamentRepository.Delete(tournament);
         }
 
         public void DeletePlayer(Guid UserId)
