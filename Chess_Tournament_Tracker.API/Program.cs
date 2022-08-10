@@ -14,8 +14,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<TournamentContext>(o => o.UseSqlServer(builder.Configuration.GetConnectionString("Main")));
-builder.Services.AddScoped<ITournamentService, TournamentService>();
-builder.Services.AddScoped<ITournamentRepository, TournamentRepository>();
+//builder.Services.AddScoped<ITournamentService, TournamentService>();
+//builder.Services.AddScoped<ITournamentRepository, TournamentRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddSingleton<TokenManager>();

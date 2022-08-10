@@ -32,7 +32,6 @@ namespace Chess_Tournament_Tracker.IL.TokenInfrastructures
             //Creation du payload
             Claim[] claims = new Claim[]
             {
-                new Claim(ClaimTypes.Surname, user.Pseudo),
                 new Claim(ClaimTypes.Sid, user.Id.ToString()),
                 new Claim(ClaimTypes.Role,user.IsAdmin ? "Admin" : "User"),
             };

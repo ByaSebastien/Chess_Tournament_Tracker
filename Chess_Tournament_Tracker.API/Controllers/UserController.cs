@@ -25,8 +25,8 @@ namespace Chess_Tournament_Tracker.API.Controllers
             try
             {
                 User user = _service.Register(registerUser);
-                user.Token = _tokenManager.GenerateToken(user);
-                return Ok(user);
+                string Token = _tokenManager.GenerateToken(user);
+                return Ok(Token);
             }
             catch (Exception ex)
             {
