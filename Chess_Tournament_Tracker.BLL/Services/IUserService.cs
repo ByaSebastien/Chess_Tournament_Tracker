@@ -11,7 +11,7 @@ namespace Chess_Tournament_Tracker.BLL.Services
     public interface IUserService
     {
         User GetById(Guid id);
-        User Register(User user);
+        User Register(RegisterDTO user);
         User Login(LoginDTO user);
         bool Update(User user);
         bool Delete(User user);
