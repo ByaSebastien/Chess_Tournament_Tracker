@@ -12,5 +12,7 @@ namespace Chess_Tournament_Tracker.DAL.Repositories
     public class TournamentRepository : RepositoryBase<Tournament>,ITournamentRepository
     {
         public TournamentRepository(DbContext context) : base(context) { }
+
+
     }
 }
