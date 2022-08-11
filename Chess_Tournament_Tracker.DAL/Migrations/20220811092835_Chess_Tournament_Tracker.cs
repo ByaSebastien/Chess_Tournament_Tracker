@@ -24,6 +24,7 @@ namespace Chess_Tournament_Tracker.DAL.Migrations
                     Status = table.Column<int>(type: "int", nullable: false),
                     CurrentRound = table.Column<int>(type: "int", nullable: false),
                     IsWomenOnly = table.Column<bool>(type: "bit", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndInscription = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -47,7 +48,8 @@ namespace Chess_Tournament_Tracker.DAL.Migrations
                     Birthate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Gender = table.Column<int>(type: "int", nullable: false),
                     ELO = table.Column<int>(type: "int", nullable: false),
-                    IsAdmin = table.Column<bool>(type: "bit", nullable: false)
+                    IsAdmin = table.Column<bool>(type: "bit", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {

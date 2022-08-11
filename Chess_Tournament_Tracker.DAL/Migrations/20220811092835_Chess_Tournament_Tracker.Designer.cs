@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Chess_Tournament_Tracker.DAL.Migrations
 {
     [DbContext(typeof(TournamentContext))]
-    [Migration("20220809093253_Chess_Tournament_Tracker")]
+    [Migration("20220811092835_Chess_Tournament_Tracker")]
     partial class Chess_Tournament_Tracker
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -97,6 +97,9 @@ namespace Chess_Tournament_Tracker.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
@@ -128,6 +131,9 @@ namespace Chess_Tournament_Tracker.DAL.Migrations
                         .HasColumnType("int");
 
                     b.Property<bool>("IsAdmin")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<string>("Mail")
