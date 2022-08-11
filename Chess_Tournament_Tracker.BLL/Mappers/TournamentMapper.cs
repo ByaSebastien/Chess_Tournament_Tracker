@@ -10,22 +10,23 @@ namespace Chess_Tournament_Tracker.BLL.Mappers
 {
     public static class TournamentMapper
     {
-        public static Tournament ToDAL(this FormTournamentDTO tournament)
+        public static Tournament ToDAL(this FormTournamentDTO tournament, Tournament? t = null)
         {
-            return new Tournament
-            {
-                Name = tournament.Name,
-                Location = tournament.Location,
-                MinPlayer = tournament.MinPlayer,
-                MaxPlayer = tournament.MaxPlayer,
-                MinELO = tournament.MinELO,
-                MaxELO = tournament.MaxELO,
-                Category = tournament.Category,
-                Status = tournament.Status,
-                IsWomenOnly = tournament.IsWomenOnly,
-                StartDate = tournament.StartDate,
-                EndInscription = tournament.EndInscription,
-            };
+            t = t ?? new Tournament();
+
+            t.Name = tournament.Name;
+            t.Location = tournament.Location;
+            t.MinPlayer = tournament.MinPlayer;
+            t.MaxPlayer = tournament.MaxPlayer;
+            t.MinELO = tournament.MinELO;
+            t.MaxELO = tournament.MaxELO;
+            t.Category = tournament.Category;
+            t.Status = tournament.Status;
+            t.IsWomenOnly = tournament.IsWomenOnly;
+            t.StartDate = tournament.StartDate;
+            t.EndInscription = tournament.EndInscription;
+
+            return t;
         }
 
     }
