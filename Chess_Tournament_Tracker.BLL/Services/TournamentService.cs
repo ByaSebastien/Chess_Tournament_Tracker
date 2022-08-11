@@ -44,7 +44,7 @@ namespace Chess_Tournament_Tracker.BLL.Services
                 throw new KeyNotFoundException("Doesn't exist");
             if (tournament.Status == TournamentStatus.InProgress)
                 throw new TournamentRulesException("Cannot delete a tournament in progress");
-            
+
             return _tournamentRepository.Delete(tournament);
 
         }
@@ -56,7 +56,8 @@ namespace Chess_Tournament_Tracker.BLL.Services
 
         public IEnumerable<Tournament> GetAll()
         {
-            throw new NotImplementedException();
+
+            return _tournamentRepository.FindMany();
         }
 
         public Tournament GetById(Guid id)
@@ -68,13 +69,13 @@ namespace Chess_Tournament_Tracker.BLL.Services
         {
 
 
-            if (!_tournamentRepository.Any(t => t.Id == id))
+            Tournament? tournament = _tournamentRepository.FindOne(id);
+            if (tournament is null)
                 throw new KeyNotFoundException("Doesn't exist");
             if (updateTournament.Status == TournamentStatus.InProgress)
                 throw new TournamentRulesException("Cannot update a tournament in progress");
 
-            Tournament tournament = updateTournament.ToDAL();
-            tournament.UpdateDate = DateTime.Now;
+            tournament = updateTournament.ToDAL(tournament);
             return _tournamentRepository.Update(tournament);
         }
     }

@@ -70,7 +70,13 @@ namespace Chess_Tournament_Tracker.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        
+        [HttpGet]
+        public IActionResult Getall()
+        {
+            IEnumerable<Tournament> tournaments = _service.GetAll();
+            return Ok(tournaments);
+        }
+
     }
 }
 
