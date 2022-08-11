@@ -1,4 +1,5 @@
 ﻿using Chess_Tournament_Tracker.BLL.DTO.Users;
+using Chess_Tournament_Tracker.BLL.Exceptions;
 using Chess_Tournament_Tracker.BLL.Mappers;
 using Chess_Tournament_Tracker.DAL.Repositories;
 using Chess_Tournament_Tracker.Models.Entities;
@@ -21,9 +22,15 @@ namespace Chess_Tournament_Tracker.BLL.Services
             _repository = repository;
         }
 
-        public bool Delete(User user)
+        public bool Delete(Guid id)
         {
-            return _repository.Delete(user);
+            User? user = _repository.FindOne(id);
+            if (user is null)
+                throw new KeyNotFoundException("Doesn't exist");
+            if (!_repository.HasTournamentInProgress(user.Id))
+                throw new UserRules("Cannot delete user with tournament in progress");
+            user.IsDeleted = true;
+            return _repository.Update(user);
         }
 
         public User GetById(Guid id)
@@ -33,7 +40,7 @@ namespace Chess_Tournament_Tracker.BLL.Services
 
         public User Login(LoginDTO loginUser)
         {
-            User user = _repository.FindOne(u => u.Pseudo == loginUser.ConnectionField || u.Mail == loginUser.ConnectionField);
+            User user = _repository.FindOne(u => u.Pseudo == loginUser.Login || u.Mail == loginUser.Login);
             if (Argon2.Hash(loginUser.Password) == user.Password)
                 return user;
             throw new UnauthorizedAccessException("Wrong Password");
@@ -41,6 +48,13 @@ namespace Chess_Tournament_Tracker.BLL.Services
 
         public User Register(RegisterDTO userRegister)
         {
+            User? oldUser = _repository.FindOne(u => u.Mail == userRegister.Mail && u.IsDeleted == true);
+            if (oldUser is not null)
+            {
+                oldUser.IsDeleted = false;
+                _repository.Update(oldUser);
+                return oldUser;
+            }
             if (_repository.Any(u => u.Pseudo == userRegister.Pseudo || u.Mail == userRegister.Mail))
                 throw new ValidationException("Already exist");
             User user = userRegister.ToDAL();

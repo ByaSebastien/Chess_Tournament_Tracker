@@ -1,4 +1,4 @@
-﻿using Chess_Tournament_Tracker.BLL.DTO.Tournament;
+using Chess_Tournament_Tracker.BLL.DTO.Tournament;
 using Chess_Tournament_Tracker.BLL.Exceptions;
 using Chess_Tournament_Tracker.BLL.Mappers;
 using Chess_Tournament_Tracker.BLL.Services;
