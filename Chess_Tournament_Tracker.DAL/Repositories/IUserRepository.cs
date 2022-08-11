@@ -10,5 +10,7 @@ namespace Chess_Tournament_Tracker.DAL.Repositories
 {
     public interface IUserRepository : IRepository<User>
     {
+        User? FindWithTournament(Guid id);
+        bool HasTournamentInProgress(Guid id);
     }
 }

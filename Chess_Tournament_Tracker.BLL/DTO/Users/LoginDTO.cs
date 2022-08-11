@@ -10,7 +10,7 @@ namespace Chess_Tournament_Tracker.BLL.DTO.Users
     public class LoginDTO
     {
         [Required]
-        public string ConnectionField { get; set; } = String.Empty;
+        public string Login { get; set; } = String.Empty;
         [Required]
         public string Password { get; set; } = String.Empty;
     }
