@@ -1,7 +1,9 @@
 ﻿using Chess_Tournament_Tracker.BLL.DTO.Tournament;
+using Chess_Tournament_Tracker.BLL.Exceptions;
 using Chess_Tournament_Tracker.BLL.Mappers;
 using Chess_Tournament_Tracker.DAL.Repositories;
 using Chess_Tournament_Tracker.Models.Entities;
+using Chess_Tournament_Tracker.Models.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +22,7 @@ namespace Chess_Tournament_Tracker.BLL.Services
             _userRepository = userRepository;
         }
 
-        public Tournament Insert(InsertTournamentDTO insertTournament)
+        public Tournament Insert(FormTournamentDTO insertTournament)
         {
             Tournament tournament = insertTournament.ToDAL();
             tournament.Id = Guid.NewGuid();
@@ -39,8 +41,12 @@ namespace Chess_Tournament_Tracker.BLL.Services
             Tournament? tournament = _tournamentRepository.FindOne(id);
 
             if (tournament == null)
-                throw new KeyNotFoundException("Doesnt exist");
+                throw new KeyNotFoundException("Doesn't exist");
+            if (tournament.Status == TournamentStatus.InProgress)
+                throw new TournamentRulesException("Cannot delete a tournament in progress");
+            
             return _tournamentRepository.Delete(tournament);
+
         }
 
         public void DeletePlayer(Guid UserId)
@@ -58,9 +64,18 @@ namespace Chess_Tournament_Tracker.BLL.Services
             return _tournamentRepository.FindOne(id) ?? throw new ArgumentNullException("Not Found");
         }
 
-        public bool Update()
+        public bool Update(FormTournamentDTO updateTournament, Guid id)
         {
-            throw new NotImplementedException();
+
+
+            if (!_tournamentRepository.Any(t => t.Id == id))
+                throw new KeyNotFoundException("Doesn't exist");
+            if (updateTournament.Status == TournamentStatus.InProgress)
+                throw new TournamentRulesException("Cannot update a tournament in progress");
+
+            Tournament tournament = updateTournament.ToDAL();
+            tournament.UpdateDate = DateTime.Now;
+            return _tournamentRepository.Update(tournament);
         }
     }
 }

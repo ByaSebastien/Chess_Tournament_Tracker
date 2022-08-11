@@ -20,6 +20,7 @@ namespace Chess_Tournament_Tracker.Models.Entities
         public TournamentStatus Status { get; set; } = TournamentStatus.WaitingPlayer;
         public int CurrentRound { get; set; } = 0;
         public bool IsWomenOnly { get; set; }
+        public DateTime StartDate { get; set; }
         public DateTime EndInscription { get; set; }
         public DateTime CreationDate { get; set; } = DateTime.Now;
         public DateTime UpdateDate { get; set; } = DateTime.Now;

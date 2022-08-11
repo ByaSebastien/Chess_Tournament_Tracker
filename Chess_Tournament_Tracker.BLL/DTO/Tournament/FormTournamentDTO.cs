@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Chess_Tournament_Tracker.BLL.DTO.Tournament
 {
-    public class InsertTournamentDTO
+    public class FormTournamentDTO
     {
         [Required]
         public string Name { get; set; } = String.Empty;
@@ -25,6 +25,7 @@ namespace Chess_Tournament_Tracker.BLL.DTO.Tournament
         public TournamentCategory Category { get; set; }
         public TournamentStatus Status { get; set; } = TournamentStatus.WaitingPlayer;
         public bool IsWomenOnly { get; set; }
+        public DateTime StartDate { get; set; }
         public DateTime EndInscription { get; set; }
     }
 }

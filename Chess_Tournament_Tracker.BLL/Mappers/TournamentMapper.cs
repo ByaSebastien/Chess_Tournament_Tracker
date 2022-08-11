@@ -10,7 +10,7 @@ namespace Chess_Tournament_Tracker.BLL.Mappers
 {
     public static class TournamentMapper
     {
-        public static Tournament ToDAL(this InsertTournamentDTO tournament)
+        public static Tournament ToDAL(this FormTournamentDTO tournament)
         {
             return new Tournament
             {
@@ -23,6 +23,7 @@ namespace Chess_Tournament_Tracker.BLL.Mappers
                 Category = tournament.Category,
                 Status = tournament.Status,
                 IsWomenOnly = tournament.IsWomenOnly,
+                StartDate = tournament.StartDate,
                 EndInscription = tournament.EndInscription,
             };
         }
