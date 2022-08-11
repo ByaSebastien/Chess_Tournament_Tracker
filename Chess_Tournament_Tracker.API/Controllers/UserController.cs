@@ -5,6 +5,8 @@ using Chess_Tournament_Tracker.IL.TokenInfrastructures;
 using Chess_Tournament_Tracker.Models.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Chess_Tournament_Tracker.BLL.Exceptions;
+using System.ComponentModel.DataAnnotations;
 
 namespace Chess_Tournament_Tracker.API.Controllers
 {
@@ -29,9 +31,34 @@ namespace Chess_Tournament_Tracker.API.Controllers
                 string Token = _tokenManager.GenerateToken(user);
                 return Ok(Token);
             }
-            catch (Exception ex)
+            catch (ValidationException ex)
             {
                 return BadRequest(ex.Message);
+            }
+            catch (Exception)
+            {
+                return BadRequest("Error");
+            }
+        }
+        [HttpDelete("{id}")]
+        public IActionResult Delete(Guid id)
+        {
+            try
+            {
+                _service.Delete(id);
+                return Ok();
+            }
+            catch(KeyNotFoundException Ex)
+            {
+                return NotFound(Ex.Message);
+            }
+            catch(UserRules ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch(Exception)
+            {
+                return BadRequest("Error");
             }
         }
     }

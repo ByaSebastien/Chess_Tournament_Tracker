@@ -14,6 +14,6 @@ namespace Chess_Tournament_Tracker.BLL.Services
         User Register(RegisterDTO user);
         User Login(LoginDTO user);
         bool Update(User user);
-        bool Delete(User user);
+        bool Delete(Guid id);
     }
 }

@@ -42,7 +42,6 @@ namespace Chess_Tournament_Tracker.API.Controllers
             {
                 return NotFound(ex.Message);
             }
-
         }
     }
 }
