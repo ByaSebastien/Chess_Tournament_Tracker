@@ -1,4 +1,5 @@
 ﻿using Chess_Tournament_Tracker.BLL.DTO.Tournament;
+using Chess_Tournament_Tracker.BLL.Exceptions;
 using Chess_Tournament_Tracker.BLL.Mappers;
 using Chess_Tournament_Tracker.BLL.Services;
 using Chess_Tournament_Tracker.Models.Entities;
@@ -18,7 +19,7 @@ namespace Chess_Tournament_Tracker.API.Controllers
             _service = service;
         }
         [HttpPost]
-        public IActionResult Insert(InsertTournamentDTO tournament)
+        public IActionResult Insert(FormTournamentDTO tournament)
         {
             try
             {
@@ -42,7 +43,34 @@ namespace Chess_Tournament_Tracker.API.Controllers
             {
                 return NotFound(ex.Message);
             }
-
+            catch (TournamentRulesException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception)
+            {
+                return BadRequest("Error");
+            }
         }
+        [HttpPut("{id}")]
+
+        public IActionResult Update(FormTournamentDTO tournament, Guid id)
+        {
+            try
+            {
+                _service.Update(tournament, id);
+                return Ok();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (TournamentRulesException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        
     }
 }
+
