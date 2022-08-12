@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Chess_Tournament_Tracker.BLL.DTO.Tournament
+namespace Chess_Tournament_Tracker.BLL.DTO.Tournaments
 {
     public class FormTournamentDTO
     {

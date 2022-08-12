@@ -1,5 +1,6 @@
 ﻿using Chess_Tournament_Tracker.DAL.Contexts;
 using Chess_Tournament_Tracker.Models.Entities;
+using Chess_Tournament_Tracker.Models.Enums;
 using Chess_Tournament_Tracker.Tools.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -14,6 +15,9 @@ namespace Chess_Tournament_Tracker.DAL.Repositories
     {
         public TournamentRepository(TournamentContext context) : base(context) { }
 
-
+        public IEnumerable<Tournament> GetLastTenTournamentsInProgressOnDateDescending()
+        {
+            return Entities.Where(t => t.Status != TournamentStatus.Finished).OrderByDescending(t => t.UpdateDate).Take(10);
+        }
     }
 }
