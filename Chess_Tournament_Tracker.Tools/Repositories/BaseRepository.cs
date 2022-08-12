@@ -21,9 +21,9 @@ namespace Chess_Tournament_Tracker.Tools.Repositories
         {
             return Entities.Find(ids);
         }
-        public TEntity FindOne(Func<TEntity, bool> predicate)
+        public TEntity? FindOne(Func<TEntity, bool> predicate)
         {
-            return Entities.SingleOrDefault(predicate) ?? throw new ArgumentNullException("Not Found");
+            return Entities.SingleOrDefault(predicate);
         }
         public IEnumerable<TEntity> FindMany(Func<TEntity, bool>? predicate = null)
         {

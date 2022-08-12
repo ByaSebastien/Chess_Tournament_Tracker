@@ -1,6 +1,7 @@
 using Chess_Tournament_Tracker.BLL.Services;
 using Chess_Tournament_Tracker.DAL.Contexts;
 using Chess_Tournament_Tracker.DAL.Repositories;
+using Chess_Tournament_Tracker.IL.EmailInfrastructures;
 using Chess_Tournament_Tracker.IL.TokenInfrastructures;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,6 +19,7 @@ builder.Services.AddScoped<ITournamentService, TournamentService>();
 builder.Services.AddScoped<ITournamentRepository, TournamentRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddSingleton<EmailSender>();
 builder.Services.AddSingleton<TokenManager>();
 
 builder.Services.AddAuthorization(options =>

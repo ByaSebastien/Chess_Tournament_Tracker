@@ -2,6 +2,8 @@
 using Chess_Tournament_Tracker.BLL.Exceptions;
 using Chess_Tournament_Tracker.BLL.Mappers;
 using Chess_Tournament_Tracker.DAL.Repositories;
+using Chess_Tournament_Tracker.IL.EmailInfrastructures;
+using Chess_Tournament_Tracker.IL.PasswordInfrastructures;
 using Chess_Tournament_Tracker.Models.Entities;
 using Isopoh.Cryptography.Argon2;
 using System;
@@ -16,10 +18,12 @@ namespace Chess_Tournament_Tracker.BLL.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _repository;
+        private readonly EmailSender _sender;
 
-        public UserService(IUserRepository repository)
+        public UserService(IUserRepository repository, EmailSender sender)
         {
             _repository = repository;
+            _sender = sender;
         }
 
         public bool Delete(Guid id)
@@ -40,7 +44,11 @@ namespace Chess_Tournament_Tracker.BLL.Services
 
         public User Login(LoginDTO loginUser)
         {
-            User user = _repository.FindOne(u => u.Pseudo == loginUser.Login || u.Mail == loginUser.Login);
+            User? user = _repository.FindOne(u => u.Pseudo == loginUser.Login || u.Mail == loginUser.Login);
+            if(user is null)
+            {
+                throw new KeyNotFoundException("User Doesn't exist");
+            }
             if (Argon2.Hash(loginUser.Password) == user.Password)
                 return user;
             throw new UnauthorizedAccessException("Wrong Password");
@@ -58,10 +66,12 @@ namespace Chess_Tournament_Tracker.BLL.Services
             if (_repository.Any(u => u.Pseudo == userRegister.Pseudo || u.Mail == userRegister.Mail))
                 throw new ValidationException("Already exist");
             User user = userRegister.ToDAL();
+            user.Password = PasswordGenerator.Create(10);
             user.Id = Guid.NewGuid();
             user.Salt = Guid.NewGuid();
-            user.Password = Argon2.Hash(userRegister.Password + user.Salt);
             user.ELO = userRegister.ELO ?? 1200;
+            _sender.SendPassword(user.Pseudo, user.Password, user.Mail);
+            user.Password = Argon2.Hash(user.Password + user.Salt);
             return _repository.Insert(user);
         }
 
