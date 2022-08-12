@@ -6,7 +6,7 @@ namespace Chess_Tournament_Tracker.BLL.Services
     public interface ITournamentService
     {
         Tournament Insert(FormTournamentDTO tournament);
-        void AddPlayer(Guid UserId);
+        void RegisterPlayerInTournament(Guid tournamentId, Guid UserId);
         bool Delete(Guid id);
         void DeletePlayer(Guid UserId);
         IEnumerable<LastTenTournamentsInProgressOnDateDescendingDTO> GetLastTenTournamentsInProgressOnDateDescending();
