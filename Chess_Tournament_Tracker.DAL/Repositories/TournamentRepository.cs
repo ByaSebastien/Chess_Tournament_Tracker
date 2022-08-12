@@ -19,5 +19,13 @@ namespace Chess_Tournament_Tracker.DAL.Repositories
         {
             return Entities.Where(t => t.Status != TournamentStatus.Finished).OrderByDescending(t => t.UpdateDate).Take(10);
         }
+        public Tournament? FindOneWithPlayer(Guid id)
+        {
+            return Entities.Include(t => t.Users).SingleOrDefault(t => t.Id == id);
+        }
+        public Tournament? FindOneWithPlayer(Func<Tournament, bool> predicate)
+        {
+            return Entities.Include(t => t.Users).SingleOrDefault(predicate);
+        }
     }
 }

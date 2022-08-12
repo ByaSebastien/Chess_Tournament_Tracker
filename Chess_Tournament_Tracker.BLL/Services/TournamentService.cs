@@ -32,9 +32,20 @@ namespace Chess_Tournament_Tracker.BLL.Services
 
         }
 
-        public void AddPlayer(Guid UserId)
+        public void RegisterPlayerInTournament(Guid tournamentId, Guid userId)
         {
-            throw new NotImplementedException();
+            Tournament? tournament = _tournamentRepository.FindOneWithPlayer(tournamentId);
+            User? user = _userRepository.FindOne(userId);
+            if (tournament is null)
+                throw new KeyNotFoundException("Tournament doesn't exist");
+            if (user is null)
+                throw new KeyNotFoundException("Player doesn't exist");
+
+            if (CanRegister(user, tournament))
+            {
+                tournament.Users.Add(user);                
+                _tournamentRepository.Update(tournament);
+            }
         }
 
         public bool Delete(Guid id)
@@ -45,7 +56,6 @@ namespace Chess_Tournament_Tracker.BLL.Services
                 throw new KeyNotFoundException("Doesn't exist");
             if (tournament.Status == TournamentStatus.InProgress)
                 throw new TournamentRulesException("Cannot delete a tournament in progress");
-
             return _tournamentRepository.Delete(tournament);
 
         }
@@ -57,9 +67,9 @@ namespace Chess_Tournament_Tracker.BLL.Services
 
         public IEnumerable<LastTenTournamentsInProgressOnDateDescendingDTO> GetLastTenTournamentsInProgressOnDateDescending()
         {
-             return _tournamentRepository.GetLastTenTournamentsInProgressOnDateDescending().Select(t => 
-               new LastTenTournamentsInProgressOnDateDescendingDTO(t)
-                );
+            return _tournamentRepository.GetLastTenTournamentsInProgressOnDateDescending().Select(t =>
+              new LastTenTournamentsInProgressOnDateDescendingDTO(t)
+               );
         }
 
         public Tournament GetById(Guid id)
@@ -79,6 +89,54 @@ namespace Chess_Tournament_Tracker.BLL.Services
 
             tournament = updateTournament.ToDAL(tournament);
             return _tournamentRepository.Update(tournament);
+        }
+
+        private bool CanRegister(User player, Tournament tournament)
+        {
+            if (tournament.Status != TournamentStatus.WaitingPlayer)
+                throw new TournamentRulesException("Tournament has began");
+            if (tournament.EndInscription > DateTime.Now)
+                throw new TournamentRulesException("Register closed");
+            if (tournament.Users.Any(p => p.Id == player.Id))
+                throw new TournamentRulesException("Already register");
+            if (tournament.Users.Count >= tournament.MaxPlayer)
+                throw new TournamentRulesException("Tournament full");
+            if (CheckCategories(tournament, player))
+                throw new TournamentRulesException("Can't fit in any category");
+            if (CheckELO(tournament, player))
+                throw new TournamentRulesException("Cant register cause to ELO");
+            if (tournament.IsWomenOnly && player.Gender == UserGender.Male)
+                throw new TournamentRulesException("Only women can register");
+            return true;
+        }
+
+        private static int CalculAge(DateTime endInscription, DateTime birthDate)
+        {
+            int age = endInscription.Year - birthDate.Year;
+            if (birthDate > endInscription.AddYears(-age)) age--;
+            return age;
+        }
+
+        private static bool CheckCategories(Tournament tournament, User player)
+        {
+            bool flag = false;
+            int age = CalculAge(tournament.EndInscription, player.Birthate);
+            if (tournament.Category.HasFlag(TournamentCategory.Junior) && age < 18)
+                flag = true;
+            if (tournament.Category.HasFlag(TournamentCategory.Senior) && age >= 18 && age < 60)
+                flag = true;
+            if (tournament.Category.HasFlag(TournamentCategory.Veteran) && age >= 60)
+                flag = true;
+            return flag;
+        }
+
+        public static bool CheckELO(Tournament tournament, User player)
+        {
+            if (tournament.MinELO is not null && player.ELO < tournament.MinELO)
+                return false;
+            if (tournament.MaxELO is not null && player.ELO > tournament.MaxELO)
+                return false;
+            return true;
         }
     }
 }

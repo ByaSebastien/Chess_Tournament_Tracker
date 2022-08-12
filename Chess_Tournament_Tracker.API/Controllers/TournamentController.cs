@@ -37,7 +37,7 @@ namespace Chess_Tournament_Tracker.API.Controllers
             try
             {
                 _service.Delete(id);
-                return Ok();
+                return NoContent();
             }
             catch (KeyNotFoundException ex)
             {
@@ -59,7 +59,7 @@ namespace Chess_Tournament_Tracker.API.Controllers
             try
             {
                 _service.Update(tournament, id);
-                return Ok();
+                return NoContent();
             }
             catch (KeyNotFoundException ex)
             {
@@ -76,7 +76,27 @@ namespace Chess_Tournament_Tracker.API.Controllers
             IEnumerable<LastTenTournamentsInProgressOnDateDescendingDTO> tournaments = _service.GetLastTenTournamentsInProgressOnDateDescending();
             return Ok(tournaments);
         }
-
+        [HttpPost("tournament/{tournamentId}/player/{playerId}")]
+        public IActionResult RegisterPlayerInTournament(Guid tournamentId,Guid playerId)
+        {
+            try
+            {
+                _service.RegisterPlayerInTournament(tournamentId, playerId);
+                return NoContent();
+            }
+            catch(TournamentRulesException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch(KeyNotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }
 
