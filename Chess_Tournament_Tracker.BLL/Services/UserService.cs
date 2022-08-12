@@ -4,6 +4,7 @@ using Chess_Tournament_Tracker.BLL.Mappers;
 using Chess_Tournament_Tracker.DAL.Repositories;
 using Chess_Tournament_Tracker.IL.EmailInfrastructures;
 using Chess_Tournament_Tracker.IL.PasswordInfrastructures;
+using Chess_Tournament_Tracker.IL.TokenInfrastructures;
 using Chess_Tournament_Tracker.Models.Entities;
 using Isopoh.Cryptography.Argon2;
 using System;
@@ -19,11 +20,14 @@ namespace Chess_Tournament_Tracker.BLL.Services
     {
         private readonly IUserRepository _repository;
         private readonly EmailSender _sender;
+        private readonly TokenManager _tokenManager;
 
-        public UserService(IUserRepository repository, EmailSender sender)
+
+        public UserService(IUserRepository repository, EmailSender sender, TokenManager tokenManager)
         {
             _repository = repository;
             _sender = sender;
+            _tokenManager = tokenManager;
         }
 
         public bool Delete(Guid id)
@@ -42,15 +46,15 @@ namespace Chess_Tournament_Tracker.BLL.Services
             return _repository.FindOne(id) ?? throw new ArgumentNullException("Not Found");
         }
 
-        public User Login(LoginDTO loginUser)
+        public string Login(LoginDTO loginUser)
         {
             User? user = _repository.FindOne(u => u.Pseudo == loginUser.Login || u.Mail == loginUser.Login);
             if(user is null)
             {
                 throw new KeyNotFoundException("User Doesn't exist");
             }
-            if (Argon2.Hash(loginUser.Password) == user.Password)
-                return user;
+            if (Argon2.Verify(user.Password, loginUser.Password + user.Salt))
+                return _tokenManager.GenerateToken(user);
             throw new UnauthorizedAccessException("Wrong Password");
         }
 
