@@ -1,4 +1,4 @@
-﻿using Chess_Tournament_Tracker.BLL.DTO.Tournament;
+﻿using Chess_Tournament_Tracker.BLL.DTO.Tournaments;
 using Chess_Tournament_Tracker.Models.Entities;
 using System;
 using System.Collections.Generic;

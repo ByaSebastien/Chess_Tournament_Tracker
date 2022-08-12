@@ -10,5 +10,6 @@ namespace Chess_Tournament_Tracker.DAL.Repositories
 {
     public interface ITournamentRepository : IRepository<Tournament>
     {
+        IEnumerable<Tournament> GetLastTenTournamentsInProgressOnDateDescending();
     }
 }

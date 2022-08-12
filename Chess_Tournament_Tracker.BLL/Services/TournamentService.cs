@@ -1,4 +1,4 @@
-﻿using Chess_Tournament_Tracker.BLL.DTO.Tournament;
+﻿using Chess_Tournament_Tracker.BLL.DTO.Tournaments;
 using Chess_Tournament_Tracker.BLL.Exceptions;
 using Chess_Tournament_Tracker.BLL.Mappers;
 using Chess_Tournament_Tracker.DAL.Repositories;
@@ -54,10 +54,11 @@ namespace Chess_Tournament_Tracker.BLL.Services
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Tournament> GetAll()
+        public IEnumerable<LastTenTournamentsInProgressOnDateDescendingDTO> GetLastTenTournamentsInProgressOnDateDescending()
         {
-
-            return _tournamentRepository.FindMany();
+             return _tournamentRepository.GetLastTenTournamentsInProgressOnDateDescending().Select(t => 
+               new LastTenTournamentsInProgressOnDateDescendingDTO(t)
+                );
         }
 
         public Tournament GetById(Guid id)

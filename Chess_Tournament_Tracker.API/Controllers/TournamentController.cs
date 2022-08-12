@@ -1,4 +1,4 @@
-using Chess_Tournament_Tracker.BLL.DTO.Tournament;
+using Chess_Tournament_Tracker.BLL.DTO.Tournaments;
 using Chess_Tournament_Tracker.BLL.Exceptions;
 using Chess_Tournament_Tracker.BLL.Mappers;
 using Chess_Tournament_Tracker.BLL.Services;
@@ -71,9 +71,9 @@ namespace Chess_Tournament_Tracker.API.Controllers
             }
         }
         [HttpGet]
-        public IActionResult Getall()
+        public IActionResult GetLastTenTournamentsInProgressOnDateDescending()
         {
-            IEnumerable<Tournament> tournaments = _service.GetAll();
+            IEnumerable<Tournament> tournaments = _service.GetLastTenTournamentsInProgressOnDateDescending();
             return Ok(tournaments);
         }
 
