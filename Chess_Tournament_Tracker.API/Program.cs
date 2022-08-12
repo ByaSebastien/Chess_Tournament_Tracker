@@ -4,12 +4,13 @@ using Chess_Tournament_Tracker.DAL.Repositories;
 using Chess_Tournament_Tracker.IL.EmailInfrastructures;
 using Chess_Tournament_Tracker.IL.TokenInfrastructures;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(o => o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

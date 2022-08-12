@@ -80,10 +80,10 @@ namespace Chess_Tournament_Tracker.BLL.Services
             user.ELO = userRegister.ELO ?? 1200;
             _sender.SendPassword(user.Pseudo, user.Password, user.Mail);
             user.Password = Argon2.Hash(user.Password + user.Salt);
-
+            User result = _repository.Insert(user);
             t.Complete();
 
-            return _repository.Insert(user);
+            return result;
         }
 
         public bool Update(User user)

@@ -1,3 +1,4 @@
+using Chess_Tournament_Tracker.API.Extensions;
 using Chess_Tournament_Tracker.BLL.DTO.Tournaments;
 using Chess_Tournament_Tracker.BLL.Exceptions;
 using Chess_Tournament_Tracker.BLL.Mappers;
@@ -5,6 +6,7 @@ using Chess_Tournament_Tracker.BLL.Services;
 using Chess_Tournament_Tracker.Models.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Chess_Tournament_Tracker.API.Controllers
 {
@@ -77,12 +79,12 @@ namespace Chess_Tournament_Tracker.API.Controllers
             return Ok(tournaments);
         }
 
-        [HttpPost("tournament/{tournamentId}/player/{playerId}")]
-        public IActionResult RegisterPlayerInTournament(Guid tournamentId,Guid playerId)
+        [HttpPost("tournament/{tournamentId}")]
+        public IActionResult RegisterPlayerInTournament(Guid tournamentId)
         {
             try
             {
-                _service.RegisterPlayerInTournament(tournamentId, playerId);
+                _service.RegisterPlayerInTournament(tournamentId, User.GetId());
                 return NoContent();
             }
             catch(TournamentRulesException ex)
@@ -98,11 +100,13 @@ namespace Chess_Tournament_Tracker.API.Controllers
                 throw;
             }
         }
-        public IActionResult UnRegisterPlayerInTournament(Guid tournamentId, Guid playerId)
+        [HttpDelete("tournament/{tournamentId}")]
+        public IActionResult UnRegisterPlayerInTournament(Guid tournamentId)
         {
+            
             try
             {
-                _service.UnregisterPlayerInTournament(tournamentId, playerId);
+                _service.UnregisterPlayerInTournament(tournamentId, User.GetId());
                 return NoContent();
             }
             catch (TournamentRulesException ex)
@@ -112,6 +116,22 @@ namespace Chess_Tournament_Tracker.API.Controllers
             catch (KeyNotFoundException ex)
             {
                 return BadRequest(ex.Message);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        [HttpGet("{id}")]
+        public IActionResult GetById(Guid id)
+        {
+            try
+            {
+                return Ok(_service.GetById(id));                
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
             }
             catch (Exception)
             {

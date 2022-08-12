@@ -18,6 +18,8 @@ namespace Chess_Tournament_Tracker.BLL.Services
         }
         public Tournament Insert(FormTournamentDTO insertTournament)
         {
+            if (insertTournament.EndInscription < DateTime.Now.AddDays(insertTournament.MinPlayer))
+                throw new TournamentRulesException($"End of inscription must have {insertTournament.MinPlayer} days upper than creation");
             Tournament tournament = insertTournament.ToDAL();
             tournament.Id = Guid.NewGuid();
             tournament.CreationDate = DateTime.Now;
@@ -40,7 +42,7 @@ namespace Chess_Tournament_Tracker.BLL.Services
 
         public Tournament GetById(Guid id)
         {
-            return _tournamentRepository.FindOne(id) ?? throw new ArgumentNullException("Not Found");
+            return _tournamentRepository.FindOneWithPlayer(id) ?? throw new KeyNotFoundException("Not Found");
         }
 
         public bool Update(FormTournamentDTO updateTournament, Guid id)

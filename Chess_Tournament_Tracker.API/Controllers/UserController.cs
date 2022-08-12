@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Chess_Tournament_Tracker.BLL.Exceptions;
 using System.ComponentModel.DataAnnotations;
 using System.Net.Mail;
+using Chess_Tournament_Tracker.API.Extensions;
 
 namespace Chess_Tournament_Tracker.API.Controllers
 {
@@ -45,12 +46,12 @@ namespace Chess_Tournament_Tracker.API.Controllers
                 throw;
             }
         }
-        [HttpDelete("{id}")]
-        public IActionResult Delete(Guid id)
+        [HttpDelete]
+        public IActionResult Delete()
         {
             try
             {
-                _service.Delete(id);
+                _service.Delete(User.GetId());
                 return Ok();
             }
             catch(KeyNotFoundException Ex)
