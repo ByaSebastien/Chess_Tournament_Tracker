@@ -98,6 +98,26 @@ namespace Chess_Tournament_Tracker.API.Controllers
                 throw;
             }
         }
+        public IActionResult UnRegisterPlayerInTournament(Guid tournamentId, Guid playerId)
+        {
+            try
+            {
+                _service.UnregisterPlayerInTournament(tournamentId, playerId);
+                return NoContent();
+            }
+            catch (TournamentRulesException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }
 
