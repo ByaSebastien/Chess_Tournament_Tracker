@@ -16,7 +16,6 @@ namespace Chess_Tournament_Tracker.BLL.Services
             _tournamentRepository = tournamentRepository;
             _userRepository = userRepository;
         }
-
         public Tournament Insert(FormTournamentDTO insertTournament)
         {
             Tournament tournament = insertTournament.ToDAL();
@@ -26,23 +25,6 @@ namespace Chess_Tournament_Tracker.BLL.Services
             return _tournamentRepository.Insert(tournament);
 
         }
-
-        public void RegisterPlayerInTournament(Guid tournamentId, Guid userId)
-        {
-            Tournament? tournament = _tournamentRepository.FindOneWithPlayer(tournamentId);
-            User? user = _userRepository.FindOne(userId);
-            if (tournament is null)
-                throw new KeyNotFoundException("Tournament doesn't exist");
-            if (user is null)
-                throw new KeyNotFoundException("Player doesn't exist");
-
-            if (CanRegister(user, tournament))
-            {
-                tournament.Users.Add(user);                
-                _tournamentRepository.Update(tournament);
-            }
-        }
-
         public bool Delete(Guid id)
         {
             Tournament? tournament = _tournamentRepository.FindOne(id);
@@ -55,17 +37,6 @@ namespace Chess_Tournament_Tracker.BLL.Services
 
         }
 
-        public void DeletePlayer(Guid UserId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<LastTenTournamentsInProgressOnDateDescendingDTO> GetLastTenTournamentsInProgressOnDateDescending()
-        {
-            return _tournamentRepository.GetLastTenTournamentsInProgressOnDateDescending().Select(t =>
-              new LastTenTournamentsInProgressOnDateDescendingDTO(t)
-               );
-        }
 
         public Tournament GetById(Guid id)
         {
@@ -84,6 +55,42 @@ namespace Chess_Tournament_Tracker.BLL.Services
 
             tournament = updateTournament.ToDAL(tournament);
             return _tournamentRepository.Update(tournament);
+        }
+        public IEnumerable<LastTenTournamentsInProgressOnDateDescendingDTO> GetLastTenTournamentsInProgressOnDateDescending()
+        {
+            return _tournamentRepository.GetLastTenTournamentsInProgressOnDateDescending().Select(t =>
+              new LastTenTournamentsInProgressOnDateDescendingDTO(t)
+               );
+        }
+        public void RegisterPlayerInTournament(Guid tournamentId, Guid userId)
+        {
+            Tournament? tournament = _tournamentRepository.FindOneWithPlayer(tournamentId);
+            User? user = _userRepository.FindOne(userId);
+            if (tournament is null)
+                throw new KeyNotFoundException("Tournament doesn't exist");
+            if (user is null)
+                throw new KeyNotFoundException("Player doesn't exist");
+
+            if (CanRegister(user, tournament))
+            {
+                tournament.Users.Add(user);                
+                _tournamentRepository.Update(tournament);
+            }
+        }
+        public void UnregisterPlayerInTournament(Guid tournamentId, Guid UserId)
+        {
+            Tournament? tournament = _tournamentRepository.FindOneWithPlayer(tournamentId);
+            User? user = _userRepository.FindOne(UserId);
+            if (tournament is null)
+                throw new KeyNotFoundException("Tournament doesn't exist");
+            if (user is null)
+                throw new KeyNotFoundException("Player doesn't exist");
+            if (tournament.Status != TournamentStatus.WaitingPlayer)
+                throw new TournamentRulesException("Tournament has began");
+            if (!tournament.Users.Any(p => p.Id == user.Id))
+                throw new TournamentRulesException("this player was not register");
+            tournament.Users.Remove(user);
+            _tournamentRepository.Update(tournament);
         }
 
         private bool CanRegister(User player, Tournament tournament)
@@ -133,5 +140,6 @@ namespace Chess_Tournament_Tracker.BLL.Services
                 return false;
             return true;
         }
+
     }
 }
