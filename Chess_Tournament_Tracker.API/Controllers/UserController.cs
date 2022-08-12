@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Chess_Tournament_Tracker.BLL.Exceptions;
 using System.ComponentModel.DataAnnotations;
+using System.Net.Mail;
 
 namespace Chess_Tournament_Tracker.API.Controllers
 {
@@ -35,9 +36,13 @@ namespace Chess_Tournament_Tracker.API.Controllers
             {
                 return BadRequest(ex.Message);
             }
+            catch (SmtpFailedRecipientException)
+            {
+                return BadRequest("Mail not valid");
+            }
             catch (Exception)
             {
-                return BadRequest("Error");
+                throw;
             }
         }
         [HttpDelete("{id}")]
@@ -58,7 +63,27 @@ namespace Chess_Tournament_Tracker.API.Controllers
             }
             catch(Exception)
             {
-                return BadRequest("Error");
+                throw;
+            }
+        }
+        [HttpPost("login")]
+        public IActionResult Login(LoginDTO user)
+        {
+            try
+            {
+                return Ok(_service.Login(user));
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return BadRequest("Wrong password");
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
     }
