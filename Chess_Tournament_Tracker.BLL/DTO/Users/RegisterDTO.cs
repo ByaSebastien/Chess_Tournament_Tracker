@@ -12,6 +12,7 @@ namespace Chess_Tournament_Tracker.BLL.DTO.Users
     public class RegisterDTO
     {
         public string Pseudo { get; set; } = string.Empty;
+        [EmailAddress]
         public string Mail { get; set; } = string.Empty;
         [BeforeToday]
         [Required]

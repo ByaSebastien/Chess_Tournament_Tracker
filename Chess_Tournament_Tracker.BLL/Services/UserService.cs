@@ -13,6 +13,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace Chess_Tournament_Tracker.BLL.Services
 {
@@ -49,7 +50,7 @@ namespace Chess_Tournament_Tracker.BLL.Services
         public string Login(LoginDTO loginUser)
         {
             User? user = _repository.FindOne(u => u.Pseudo == loginUser.Login || u.Mail == loginUser.Login);
-            if(user is null)
+            if (user is null)
             {
                 throw new KeyNotFoundException("User Doesn't exist");
             }
@@ -69,6 +70,9 @@ namespace Chess_Tournament_Tracker.BLL.Services
             }
             if (_repository.Any(u => u.Pseudo == userRegister.Pseudo || u.Mail == userRegister.Mail))
                 throw new ValidationException("Already exist");
+
+            using TransactionScope t = new();
+
             User user = userRegister.ToDAL();
             user.Password = PasswordGenerator.Create(10);
             user.Id = Guid.NewGuid();
@@ -76,6 +80,9 @@ namespace Chess_Tournament_Tracker.BLL.Services
             user.ELO = userRegister.ELO ?? 1200;
             _sender.SendPassword(user.Pseudo, user.Password, user.Mail);
             user.Password = Argon2.Hash(user.Password + user.Salt);
+
+            t.Complete();
+
             return _repository.Insert(user);
         }
 
