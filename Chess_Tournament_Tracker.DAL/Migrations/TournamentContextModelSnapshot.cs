@@ -60,6 +60,9 @@ namespace Chess_Tournament_Tracker.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("CanRegister")
+                        .HasColumnType("bit");
+
                     b.Property<int>("Category")
                         .HasColumnType("int");
 
@@ -72,6 +75,9 @@ namespace Chess_Tournament_Tracker.DAL.Migrations
                     b.Property<DateTime>("EndInscription")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsRegister")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsWomenOnly")
                         .HasColumnType("bit");
 
@@ -79,13 +85,13 @@ namespace Chess_Tournament_Tracker.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("MaxELO")
+                    b.Property<int?>("MaxELO")
                         .HasColumnType("int");
 
                     b.Property<int>("MaxPlayer")
                         .HasColumnType("int");
 
-                    b.Property<int>("MinELO")
+                    b.Property<int?>("MinELO")
                         .HasColumnType("int");
 
                     b.Property<int>("MinPlayer")

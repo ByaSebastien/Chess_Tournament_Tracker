@@ -32,8 +32,8 @@ namespace Chess_Tournament_Tracker.BLL.DTO.Tournaments
         public string Location { get; set; } = String.Empty;
         public int MinPlayer { get; set; }
         public int MaxPlayer { get; set; }
-        public int MinELO { get; set; }
-        public int MaxELO { get; set; }
+        public int? MinELO { get; set; }
+        public int? MaxELO { get; set; }
         public TournamentCategory Category { get; set; }
         public TournamentStatus Status { get; set; } = TournamentStatus.WaitingPlayer;
         public int CurrentRound { get; set; } = 0;

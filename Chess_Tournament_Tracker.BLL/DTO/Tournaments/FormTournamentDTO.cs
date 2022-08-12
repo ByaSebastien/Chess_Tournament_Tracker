@@ -22,11 +22,11 @@ namespace Chess_Tournament_Tracker.BLL.DTO.Tournaments
         [Range(2,32)]
         public int MaxPlayer { get; set; }
         [Range(0,3000)]
-        public int MinELO { get; set; }
+        public int? MinELO { get; set; }
 
         [IsGreaterThan(nameof(MinELO))]
         [Range(0,3000)]
-        public int MaxELO { get; set; }
+        public int? MaxELO { get; set; }
         public TournamentCategory Category { get; set; }
         public TournamentStatus Status { get; set; } = TournamentStatus.WaitingPlayer;
         public bool IsWomenOnly { get; set; }
