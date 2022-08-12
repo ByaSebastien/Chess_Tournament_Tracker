@@ -9,7 +9,7 @@ namespace Chess_Tournament_Tracker.BLL.Services
         void AddPlayer(Guid UserId);
         bool Delete(Guid id);
         void DeletePlayer(Guid UserId);
-        IEnumerable<Tournament> GetLastTenTournamentsInProgressOnDateDescending();
+        IEnumerable<LastTenTournamentsInProgressOnDateDescendingDTO> GetLastTenTournamentsInProgressOnDateDescending();
         Tournament GetById(Guid id);
         bool Update(FormTournamentDTO tournament, Guid id);
     }

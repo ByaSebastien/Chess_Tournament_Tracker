@@ -27,6 +27,7 @@ namespace Chess_Tournament_Tracker.BLL.Services
             Tournament tournament = insertTournament.ToDAL();
             tournament.Id = Guid.NewGuid();
             tournament.CreationDate = DateTime.Now;
+            tournament.UpdateDate = DateTime.Now;
             return _tournamentRepository.Insert(tournament);
 
         }

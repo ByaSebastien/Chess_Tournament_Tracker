@@ -73,7 +73,7 @@ namespace Chess_Tournament_Tracker.API.Controllers
         [HttpGet]
         public IActionResult GetLastTenTournamentsInProgressOnDateDescending()
         {
-            IEnumerable<Tournament> tournaments = _service.GetLastTenTournamentsInProgressOnDateDescending();
+            IEnumerable<LastTenTournamentsInProgressOnDateDescendingDTO> tournaments = _service.GetLastTenTournamentsInProgressOnDateDescending();
             return Ok(tournaments);
         }
 
