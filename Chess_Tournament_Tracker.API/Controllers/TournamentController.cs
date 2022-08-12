@@ -76,6 +76,7 @@ namespace Chess_Tournament_Tracker.API.Controllers
             IEnumerable<LastTenTournamentsInProgressOnDateDescendingDTO> tournaments = _service.GetLastTenTournamentsInProgressOnDateDescending();
             return Ok(tournaments);
         }
+
         [HttpPost("tournament/{tournamentId}/player/{playerId}")]
         public IActionResult RegisterPlayerInTournament(Guid tournamentId,Guid playerId)
         {
