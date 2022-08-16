@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 namespace Chess_Tournament_Tracker.BLL.DTO.Tournaments
 {
     
-    public class LastTenTournamentsInProgressOnDateDescendingDTO
+    public class TournamentDTO
     {
-        public LastTenTournamentsInProgressOnDateDescendingDTO(Tournament tournament)
+        public TournamentDTO(Tournament tournament)
         {
             Id = tournament.Id;
             CountPlayer = tournament.Users.Count;
@@ -37,6 +37,8 @@ namespace Chess_Tournament_Tracker.BLL.DTO.Tournaments
         public TournamentCategory Category { get; set; }
         public TournamentStatus Status { get; set; } = TournamentStatus.WaitingPlayer;
         public int CurrentRound { get; set; } = 0;
+        public bool CanRegister { get; set; }
+        public bool IsRegister { get; set; }
 
     }
 }

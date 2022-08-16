@@ -10,6 +10,6 @@ namespace Chess_Tournament_Tracker.BLL.Services
         public bool Update(FormTournamentDTO updateTournament, Guid id);
         void RegisterPlayerInTournament(Guid tournamentId, Guid UserId);
         void UnregisterPlayerInTournament(Guid tournamentId, Guid UserId);
-        IEnumerable<LastTenTournamentsInProgressOnDateDescendingDTO> GetLastTenTournamentsInProgressOnDateDescending();
+        IEnumerable<TournamentDTO> GetLastTenTournamentsInProgressOnDateDescending();
     }
 }

@@ -56,10 +56,10 @@ namespace Chess_Tournament_Tracker.BLL.Services
             tournament = updateTournament.ToDAL(tournament);
             return _tournamentRepository.Update(tournament);
         }
-        public IEnumerable<LastTenTournamentsInProgressOnDateDescendingDTO> GetLastTenTournamentsInProgressOnDateDescending()
+        public IEnumerable<TournamentDTO> GetLastTenTournamentsInProgressOnDateDescending()
         {
             return _tournamentRepository.GetLastTenTournamentsInProgressOnDateDescending().Select(t =>
-              new LastTenTournamentsInProgressOnDateDescendingDTO(t)
+              new TournamentDTO(t)
                );
         }
         public void RegisterPlayerInTournament(Guid tournamentId, Guid userId)
