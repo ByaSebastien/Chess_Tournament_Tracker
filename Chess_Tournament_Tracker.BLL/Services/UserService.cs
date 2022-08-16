@@ -81,7 +81,6 @@ namespace Chess_Tournament_Tracker.BLL.Services
             user.Password = Argon2.Hash(user.Password + user.Salt);
             _repository.Insert(user);
             t.Complete();
-
         }
 
         public bool Update(User user)

@@ -4,6 +4,7 @@ using Chess_Tournament_Tracker.BLL.Exceptions;
 using Chess_Tournament_Tracker.BLL.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Chess_Tournament_Tracker.API.Controllers
 {
@@ -17,7 +18,6 @@ namespace Chess_Tournament_Tracker.API.Controllers
         {
             _service = service;
         }
-        [Authorize("Auth")]
         [Authorize("Admin")]
         [HttpPost]
         public IActionResult Insert(FormTournamentDTO tournament)
@@ -32,7 +32,6 @@ namespace Chess_Tournament_Tracker.API.Controllers
                 throw;
             }
         }
-        [Authorize("Auth")]
         [Authorize("Admin")]
         [HttpDelete("{id}")]
         public IActionResult Delete(Guid id)
@@ -103,11 +102,11 @@ namespace Chess_Tournament_Tracker.API.Controllers
         }
         [Authorize("Auth")]
         [HttpPost("id/{tournamentId}")]
-        public IActionResult RegisterPlayerInTournament(Guid tournamentId,Guid id)
+        public IActionResult RegisterPlayerInTournament(Guid tournamentId)
         {
             try
             {
-                _service.RegisterPlayerInTournament(tournamentId, id);
+                _service.RegisterPlayerInTournament(tournamentId, User.GetId());
                 return NoContent();
             }
             catch(TournamentRulesException ex)

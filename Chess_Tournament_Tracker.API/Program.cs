@@ -52,11 +52,6 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddSingleton<EmailSender>();
 builder.Services.AddSingleton<TokenManager>();
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("Auth", policy => policy.RequireAuthenticatedUser());
-    options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
-});
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters()
@@ -70,6 +65,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         ValidateLifetime = false
     };
 });
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Auth", policy => policy.RequireAuthenticatedUser());
+    options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -79,6 +79,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

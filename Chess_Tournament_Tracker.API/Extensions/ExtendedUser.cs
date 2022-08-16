@@ -2,7 +2,7 @@
 
 namespace Chess_Tournament_Tracker.API.Extensions
 {
-    public static class User
+    public static class ExtendedUser
     {
         public static Guid GetId(this ClaimsPrincipal claims)
         {
