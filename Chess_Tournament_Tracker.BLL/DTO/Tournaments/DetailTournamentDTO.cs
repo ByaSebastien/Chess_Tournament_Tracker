@@ -12,7 +12,7 @@ namespace Chess_Tournament_Tracker.BLL.DTO.Tournaments
     {
         public DetailTournamentDTO(Tournament t) : base(t) 
         {
-            Games = t.Games;
+            Games = t.Games.Where(g => g.Round == t.CurrentRound).ToList();
             Users = t.Users.Select(u => new PlayerDTO(u)).ToList();
         }
         public ICollection<PlayerDTO> Users { get; set; } = new List<PlayerDTO>();

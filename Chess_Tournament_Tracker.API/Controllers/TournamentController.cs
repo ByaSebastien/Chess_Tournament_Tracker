@@ -2,7 +2,6 @@ using Chess_Tournament_Tracker.API.Extensions;
 using Chess_Tournament_Tracker.BLL.DTO.Tournaments;
 using Chess_Tournament_Tracker.BLL.Exceptions;
 using Chess_Tournament_Tracker.BLL.Services;
-using Chess_Tournament_Tracker.Models.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
