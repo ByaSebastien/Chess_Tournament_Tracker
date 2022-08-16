@@ -59,14 +59,13 @@ namespace Chess_Tournament_Tracker.BLL.Services
             throw new UnauthorizedAccessException("Wrong Password");
         }
 
-        public User Register(RegisterDTO userRegister)
+        public void Register(RegisterDTO userRegister)
         {
             User? oldUser = _repository.FindOne(u => u.Mail == userRegister.Mail && u.IsDeleted == true);
             if (oldUser is not null)
             {
                 oldUser.IsDeleted = false;
                 _repository.Update(oldUser);
-                return oldUser;
             }
             if (_repository.Any(u => u.Pseudo == userRegister.Pseudo || u.Mail == userRegister.Mail))
                 throw new ValidationException("Already exist");
@@ -80,10 +79,9 @@ namespace Chess_Tournament_Tracker.BLL.Services
             user.ELO = userRegister.ELO ?? 1200;
             _sender.SendPassword(user.Pseudo, user.Password, user.Mail);
             user.Password = Argon2.Hash(user.Password + user.Salt);
-
+            _repository.Insert(user);
             t.Complete();
 
-            return _repository.Insert(user);
         }
 
         public bool Update(User user)

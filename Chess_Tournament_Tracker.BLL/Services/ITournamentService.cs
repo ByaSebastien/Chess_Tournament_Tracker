@@ -6,10 +6,11 @@ namespace Chess_Tournament_Tracker.BLL.Services
     public interface ITournamentService
     {
         Tournament Insert(FormTournamentDTO tournament);
-        public bool Delete(Guid id);
-        public bool Update(FormTournamentDTO updateTournament, Guid id);
+        bool Delete(Guid id);
+        bool Update(FormTournamentDTO updateTournament, Guid id);
         void RegisterPlayerInTournament(Guid tournamentId, Guid UserId);
         void UnregisterPlayerInTournament(Guid tournamentId, Guid UserId);
-        IEnumerable<TournamentDTO> GetLastTenTournamentsInProgressOnDateDescending();
+        IEnumerable<TournamentDTO> GetAllByTen(Guid UserId,int offset = 0);
+        DetailTournamentDTO GetById(Guid id);
     }
 }

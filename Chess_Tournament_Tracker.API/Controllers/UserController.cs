@@ -1,13 +1,13 @@
-using Microsoft.AspNetCore.Http;
 using Chess_Tournament_Tracker.BLL.DTO.Users;
 using Chess_Tournament_Tracker.BLL.Services;
 using Chess_Tournament_Tracker.IL.TokenInfrastructures;
-using Chess_Tournament_Tracker.Models.Entities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Chess_Tournament_Tracker.BLL.Exceptions;
 using System.ComponentModel.DataAnnotations;
 using System.Net.Mail;
+using Microsoft.AspNetCore.Authorization;
+using Chess_Tournament_Tracker.API.Extensions;
+using User = Chess_Tournament_Tracker.Models.Entities.User;
 
 namespace Chess_Tournament_Tracker.API.Controllers
 {
@@ -28,9 +28,8 @@ namespace Chess_Tournament_Tracker.API.Controllers
         {
             try
             {
-                User user = _service.Register(registerUser);
-                string Token = _tokenManager.GenerateToken(user);
-                return Ok(Token);
+                _service.Register(registerUser);
+                return NoContent();
             }
             catch (ValidationException ex)
             {
@@ -45,12 +44,13 @@ namespace Chess_Tournament_Tracker.API.Controllers
                 throw;
             }
         }
-        [HttpDelete("{id}")]
-        public IActionResult Delete(Guid id)
+        [Authorize("Auth")]
+        [HttpDelete()]
+        public IActionResult Delete()
         {
             try
             {
-                _service.Delete(id);
+                _service.Delete(User.GetId());
                 return Ok();
             }
             catch(KeyNotFoundException Ex)

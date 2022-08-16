@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Chess_Tournament_Tracker.DAL.Migrations
 {
     [DbContext(typeof(TournamentContext))]
-    [Migration("20220812125837_Chess_Tournament_Tracker")]
+    [Migration("20220816084757_Chess_Tournament_Tracker")]
     partial class Chess_Tournament_Tracker
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -62,9 +62,6 @@ namespace Chess_Tournament_Tracker.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("CanRegister")
-                        .HasColumnType("bit");
-
                     b.Property<int>("Category")
                         .HasColumnType("int");
 
@@ -76,9 +73,6 @@ namespace Chess_Tournament_Tracker.DAL.Migrations
 
                     b.Property<DateTime>("EndInscription")
                         .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsRegister")
-                        .HasColumnType("bit");
 
                     b.Property<bool>("IsWomenOnly")
                         .HasColumnType("bit");

@@ -24,6 +24,8 @@ namespace Chess_Tournament_Tracker.BLL.DTO.Tournaments
             Category = tournament.Category;
             Status = tournament.Status;
             CurrentRound = tournament.CurrentRound;
+            StartDate = tournament.StartDate;
+            EndInscription = tournament.EndInscription;
 
         }
         public Guid Id { get; set; }
@@ -39,6 +41,7 @@ namespace Chess_Tournament_Tracker.BLL.DTO.Tournaments
         public int CurrentRound { get; set; } = 0;
         public bool CanRegister { get; set; }
         public bool IsRegister { get; set; }
-
+        public DateTime StartDate { get; set; }
+        public DateTime EndInscription { get; set; }
     }
 }

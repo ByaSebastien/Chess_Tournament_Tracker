@@ -36,13 +36,6 @@ namespace Chess_Tournament_Tracker.BLL.Services
             return _tournamentRepository.Delete(tournament);
 
         }
-
-
-        public Tournament GetById(Guid id)
-        {
-            return _tournamentRepository.FindOne(id) ?? throw new ArgumentNullException("Not Found");
-        }
-
         public bool Update(FormTournamentDTO updateTournament, Guid id)
         {
 
@@ -56,10 +49,21 @@ namespace Chess_Tournament_Tracker.BLL.Services
             tournament = updateTournament.ToDAL(tournament);
             return _tournamentRepository.Update(tournament);
         }
-        public IEnumerable<TournamentDTO> GetLastTenTournamentsInProgressOnDateDescending()
+        public DetailTournamentDTO GetById(Guid id)
         {
-            return _tournamentRepository.GetLastTenTournamentsInProgressOnDateDescending().Select(t =>
+            Tournament tournament = _tournamentRepository.FindDetail(id) ?? throw new KeyNotFoundException("Not Found");
+            return new DetailTournamentDTO(tournament);
+        }
+        public IEnumerable<TournamentDTO> GetAllByTen(Guid userId, int offset = 0)
+        {
+            User? player = _userRepository.FindOne(userId);
+            return _tournamentRepository.GetAllByTen(offset).Select(t =>
               new TournamentDTO(t)
+              {
+                  IsRegister = t.Users.Any(p => p.Id == player?.Id),
+                  CanRegister = player is null ? false : CanRegister(player, t),
+                  CountPlayer = t.Users.Count
+              }
                );
         }
         public void RegisterPlayerInTournament(Guid tournamentId, Guid userId)
@@ -73,7 +77,7 @@ namespace Chess_Tournament_Tracker.BLL.Services
 
             if (CanRegister(user, tournament))
             {
-                tournament.Users.Add(user);                
+                tournament.Users.Add(user);
                 _tournamentRepository.Update(tournament);
             }
         }
@@ -97,7 +101,7 @@ namespace Chess_Tournament_Tracker.BLL.Services
         {
             if (tournament.Status != TournamentStatus.WaitingPlayer)
                 throw new TournamentRulesException("Tournament has began");
-            if (tournament.EndInscription > DateTime.Now)
+            if (tournament.EndInscription < DateTime.Now)
                 throw new TournamentRulesException("Register closed");
             if (tournament.Users.Any(p => p.Id == player.Id))
                 throw new TournamentRulesException("Already register");
@@ -121,24 +125,24 @@ namespace Chess_Tournament_Tracker.BLL.Services
 
         private static bool CheckCategories(Tournament tournament, User player)
         {
-            bool flag = false;
+            bool flag = true;
             int age = CalculAge(tournament.EndInscription, player.Birthate);
             if (tournament.Category.HasFlag(TournamentCategory.Junior) && age < 18)
-                flag = true;
+                flag = false;
             if (tournament.Category.HasFlag(TournamentCategory.Senior) && age >= 18 && age < 60)
-                flag = true;
+                flag = false;
             if (tournament.Category.HasFlag(TournamentCategory.Veteran) && age >= 60)
-                flag = true;
+                flag = false;
             return flag;
         }
 
         public static bool CheckELO(Tournament tournament, User player)
         {
             if (tournament.MinELO is not null && player.ELO < tournament.MinELO)
-                return false;
+                return true;
             if (tournament.MaxELO is not null && player.ELO > tournament.MaxELO)
-                return false;
-            return true;
+                return true;
+            return false;
         }
 
     }

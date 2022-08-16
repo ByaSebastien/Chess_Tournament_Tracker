@@ -24,8 +24,6 @@ namespace Chess_Tournament_Tracker.DAL.Migrations
                     Status = table.Column<int>(type: "int", nullable: false),
                     CurrentRound = table.Column<int>(type: "int", nullable: false),
                     IsWomenOnly = table.Column<bool>(type: "bit", nullable: false),
-                    CanRegister = table.Column<bool>(type: "bit", nullable: false),
-                    IsRegister = table.Column<bool>(type: "bit", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndInscription = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
