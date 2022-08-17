@@ -88,7 +88,7 @@ namespace Chess_Tournament_Tracker.API.Controllers
         {
             try
             {
-                DetailTournamentDTO t = _service.GetById(id);
+                FullTournamentDTO t = _service.GetById(id);
                 return Ok(t);
             }
             catch(KeyNotFoundException ex)
@@ -129,6 +129,50 @@ namespace Chess_Tournament_Tracker.API.Controllers
             try
             {
                 _service.UnregisterPlayerInTournament(tournamentId, User.GetId());
+                return NoContent();
+            }
+            catch (TournamentRulesException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        [Authorize("Admin")]
+        [HttpPatch("Start/{id}")]
+        public IActionResult StartTournament(Guid id)
+        {
+            try
+            {
+                _service.StartTournament(id);
+                return NoContent();
+            }
+            catch (TournamentRulesException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        [Authorize("Admin")]
+        [HttpPatch("Next/{id}")]
+        public IActionResult NextRound(Guid id)
+        {
+            try
+            {
+                _service.NextRound(id);
                 return NoContent();
             }
             catch (TournamentRulesException ex)

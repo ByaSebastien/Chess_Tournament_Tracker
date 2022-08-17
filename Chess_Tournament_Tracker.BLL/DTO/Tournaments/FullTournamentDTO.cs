@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Chess_Tournament_Tracker.BLL.DTO.Tournaments
 {
-    public class DetailTournamentDTO : TournamentDTO
+    public class FullTournamentDTO : TournamentDTO
     {
-        public DetailTournamentDTO(Tournament t) : base(t) 
+        public FullTournamentDTO(Tournament t) : base(t) 
         {
             Games = t.Games.Where(g => g.Round == t.CurrentRound).ToList();
             Users = t.Users.Select(u => new PlayerDTO(u)).ToList();
