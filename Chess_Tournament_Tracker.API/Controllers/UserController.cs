@@ -16,12 +16,10 @@ namespace Chess_Tournament_Tracker.API.Controllers
     public class UserController : ControllerBase
     {
         private IUserService _service;
-        private TokenManager _tokenManager;
 
         public UserController(IUserService service, TokenManager tokenManager)
         {
             _service = service;
-            _tokenManager = tokenManager;
         }
         [HttpPost]
         public IActionResult Register(RegisterDTO registerUser)

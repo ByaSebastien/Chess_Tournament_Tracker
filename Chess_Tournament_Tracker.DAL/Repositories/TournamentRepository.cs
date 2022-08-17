@@ -21,6 +21,14 @@ namespace Chess_Tournament_Tracker.DAL.Repositories
         {
             return Entities.Include(t => t.Users).SingleOrDefault(predicate);
         }
+        public Tournament? FindOneWithGame(Guid id)
+        {
+            return Entities.Include(t => t.Games).SingleOrDefault(t => t.Id == id);
+        }
+        public Tournament? FindOneWithGame(Func<Tournament, bool> predicate)
+        {
+            return Entities.Include(t => t.Games).SingleOrDefault(predicate);
+        }
         public Tournament? FindDetail(Guid id)
         {
             return Entities.Include(t=>t.Users).Include(t => t.Games).SingleOrDefault(t => t.Id == id);
