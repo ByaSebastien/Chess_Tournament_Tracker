@@ -14,7 +14,6 @@ namespace Chess_Tournament_Tracker.DAL.Configurations
         public void Configure(EntityTypeBuilder<Tournament> builder)
         {
             builder.HasCheckConstraint("CK_NumberPlayer", "MinPlayer <= MaxPlayer");
-            //builder.HasCheckConstraint("CK_EndInscription", "EndInscription < DATEADD(DAY,MinPlayer,CreationDate)");
         }
     }
 }

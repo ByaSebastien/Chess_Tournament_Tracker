@@ -1,4 +1,5 @@
 ﻿using Chess_Tournament_Tracker.BLL.DTO.Tournaments;
+using Chess_Tournament_Tracker.BLL.DTO.Users;
 using Chess_Tournament_Tracker.BLL.Exceptions;
 using Chess_Tournament_Tracker.BLL.Mappers;
 using Chess_Tournament_Tracker.DAL.Repositories;
@@ -104,9 +105,9 @@ namespace Chess_Tournament_Tracker.BLL.Services
             if (tournament.EndInscription < DateTime.Now)
                 throw new TournamentRulesException("Inscription not ended");
             List<User> users = tournament.Users.ToList();
-            GenerateGames(users,tournament);
+            GenerateGames(users, tournament);
             users = tournament.Users.Reverse().ToList();
-            GenerateGames(users,tournament);
+            GenerateGames(users, tournament);
             tournament.CurrentRound = 1;
             tournament.UpdateDate = DateTime.Now;
             tournament.Status = TournamentStatus.InProgress;
@@ -121,7 +122,28 @@ namespace Chess_Tournament_Tracker.BLL.Services
             tournament.CurrentRound++;
             _tournamentRepository.Update(tournament);
         }
-        private static void GenerateGames(List<User> users,Tournament tournament)
+        public TournamentWithScoreDTO GetTournamentWithPlayerResult(Guid tournamentId, int round)
+        {
+            Tournament? tournament = _tournamentRepository.GetTournamentWithPlayerResult(tournamentId,round);
+            if (tournament is null) throw new KeyNotFoundException("Tournament doesnt exist");
+            TournamentWithScoreDTO tournamentWithScoreDTO = new TournamentWithScoreDTO(tournament);
+            ICollection<PlayerScoreDTO> players = new List<PlayerScoreDTO>();
+            foreach (User user in tournament.Users)
+            {
+                PlayerScoreDTO player = new PlayerScoreDTO(user)
+                {
+                    GamePlayed = user.GamesAsWhite.Where(g => g.Result != GameResult.NotPlayed).Count() + user.GamesAsBlack.Where(g => g.Result != GameResult.NotPlayed).Count(),
+                    GameWon = user.GamesAsWhite.Where(g => g.Result != GameResult.White).Count() + user.GamesAsBlack.Where(g => g.Result != GameResult.Black).Count(),
+                    GameLost = user.GamesAsWhite.Where(g => g.Result != GameResult.Black).Count() + user.GamesAsBlack.Where(g => g.Result != GameResult.White).Count(),
+                    GameDrawn = user.GamesAsWhite.Where(g => g.Result != GameResult.Draw).Count() + user.GamesAsBlack.Where(g => g.Result != GameResult.Draw).Count(),
+                };
+                player.Score = player.GameWon + player.GameDrawn / 2;
+                players.Add(player);
+            }
+            tournamentWithScoreDTO.Players = players;
+            return tournamentWithScoreDTO;
+        }
+        private static void GenerateGames(List<User> users, Tournament tournament)
         {
             for (int currentRound = 1; currentRound <= (users.Count - 1); currentRound++)
             {

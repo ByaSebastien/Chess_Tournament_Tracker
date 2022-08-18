@@ -32,7 +32,6 @@ namespace Chess_Tournament_Tracker.DAL.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tournaments", x => x.Id);
-                    table.CheckConstraint("CK_EndInscription", "EndInscription < DATEADD(DAY,MinPlayer,CreationDate)");
                     table.CheckConstraint("CK_NumberPlayer", "MinPlayer <= MaxPlayer");
                 });
 
@@ -63,16 +62,16 @@ namespace Chess_Tournament_Tracker.DAL.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     BlackId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     WhiteId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TournamentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Result = table.Column<int>(type: "int", nullable: false),
-                    Round = table.Column<int>(type: "int", nullable: false),
-                    CurrentTournamentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    Round = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Game", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Game_Tournaments_CurrentTournamentId",
-                        column: x => x.CurrentTournamentId,
+                        name: "FK_Game_Tournaments_TournamentId",
+                        column: x => x.TournamentId,
                         principalTable: "Tournaments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -120,9 +119,9 @@ namespace Chess_Tournament_Tracker.DAL.Migrations
                 column: "BlackId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Game_CurrentTournamentId",
+                name: "IX_Game_TournamentId",
                 table: "Game",
-                column: "CurrentTournamentId");
+                column: "TournamentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Game_WhiteId",

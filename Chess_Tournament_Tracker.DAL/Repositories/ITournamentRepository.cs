@@ -16,5 +16,6 @@ namespace Chess_Tournament_Tracker.DAL.Repositories
         Tournament? FindOneWithGame(Guid id);
         Tournament? FindOneWithGame(Func<Tournament,bool> predicate);
         Tournament? FindDetail(Guid id);
+        public Tournament? GetTournamentWithPlayerResult(Guid tournamentId, int round);
     }
 }
