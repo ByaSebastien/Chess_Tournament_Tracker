@@ -33,5 +33,14 @@ namespace Chess_Tournament_Tracker.DAL.Repositories
         {
             return Entities.Include(t=>t.Users).Include(t => t.Games).SingleOrDefault(t => t.Id == id);
         }
+
+        public Tournament? GetTournamentWithPlayerResult(Guid tournamentId, int round)
+        {
+            return Entities.Include(T => T.Users)
+                           .ThenInclude(u => u.GamesAsWhite.Select(g => g.TournamentId == tournamentId)).Where(g => g.CurrentRound <= round)
+                           .Include(T => T.Users)
+                           .ThenInclude(u => u.GamesAsBlack.Select(g => g.TournamentId == tournamentId)).Where(g => g.CurrentRound <= round)
+                           .SingleOrDefault(t => t.Id == tournamentId);
+        }
     }
 }

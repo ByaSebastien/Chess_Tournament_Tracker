@@ -188,6 +188,23 @@ namespace Chess_Tournament_Tracker.API.Controllers
                 throw;
             }
         }
+        [HttpGet("Tournament/{id}/{round}")]
+        public IActionResult GetTournamentWithPlayerResult(Guid tournamentId, int round)
+        {
+            try
+            {
+                TournamentWithScoreDTO tournament = _service.GetTournamentWithPlayerResult(tournamentId, round);
+                return Ok(tournament);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }
 

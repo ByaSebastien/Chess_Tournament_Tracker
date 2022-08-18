@@ -31,14 +31,14 @@ namespace Chess_Tournament_Tracker.DAL.Migrations
                     b.Property<Guid>("BlackId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CurrentTournamentId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<int>("Result")
                         .HasColumnType("int");
 
                     b.Property<int>("Round")
                         .HasColumnType("int");
+
+                    b.Property<Guid>("TournamentId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("WhiteId")
                         .HasColumnType("uniqueidentifier");
@@ -47,7 +47,7 @@ namespace Chess_Tournament_Tracker.DAL.Migrations
 
                     b.HasIndex("BlackId");
 
-                    b.HasIndex("CurrentTournamentId");
+                    b.HasIndex("TournamentId");
 
                     b.HasIndex("WhiteId");
 
@@ -107,8 +107,6 @@ namespace Chess_Tournament_Tracker.DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Tournaments");
-
-                    b.HasCheckConstraint("CK_EndInscription", "EndInscription < DATEADD(DAY,MinPlayer,CreationDate)");
 
                     b.HasCheckConstraint("CK_NumberPlayer", "MinPlayer <= MaxPlayer");
                 });
@@ -187,7 +185,7 @@ namespace Chess_Tournament_Tracker.DAL.Migrations
 
                     b.HasOne("Chess_Tournament_Tracker.Models.Entities.Tournament", "CurrentTournament")
                         .WithMany("Games")
-                        .HasForeignKey("CurrentTournamentId")
+                        .HasForeignKey("TournamentId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 

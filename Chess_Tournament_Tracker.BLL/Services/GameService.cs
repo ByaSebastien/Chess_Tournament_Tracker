@@ -12,9 +12,9 @@ namespace Chess_Tournament_Tracker.BLL.Services
 {
     public class GameService : IGameService
     {
-        private readonly GameRepository _GameRepository;
-        private readonly TournamentRepository _tournamentRepository;
-        public GameService(GameRepository gameRepository,TournamentRepository tournamentRepository)
+        private readonly IGameRepository _GameRepository;
+        private readonly ITournamentRepository _tournamentRepository;
+        public GameService(IGameRepository gameRepository,ITournamentRepository tournamentRepository)
         {
             _GameRepository = gameRepository;
             _tournamentRepository = tournamentRepository;
