@@ -81,7 +81,7 @@ namespace Chess_Tournament_Tracker.API.Controllers
         public IActionResult GetAllByTen(int offset = 0)
         {
             IEnumerable<TournamentDTO> tournaments = _service.GetAllByTen(User.GetId(),offset);
-            return Ok(tournaments);
+            return Ok(tournaments);            
         }
         [HttpGet("id/{id}")]
         public IActionResult GetById(Guid id)

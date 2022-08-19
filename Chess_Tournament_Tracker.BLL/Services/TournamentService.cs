@@ -167,19 +167,19 @@ namespace Chess_Tournament_Tracker.BLL.Services
         private static bool CanRegister(User player, Tournament tournament)
         {
             if (tournament.Status != TournamentStatus.WaitingPlayer)
-                throw new TournamentRulesException("Tournament has began");
+                return false;
             if (tournament.EndInscription < DateTime.Now)
-                throw new TournamentRulesException("Register closed");
+                return false;
             if (tournament.Users.Any(p => p.Id == player.Id))
-                throw new TournamentRulesException("Already register");
+                return false;
             if (tournament.Users.Count >= tournament.MaxPlayer)
-                throw new TournamentRulesException("Tournament full");
+                return false;
             if (CheckCategories(tournament, player))
-                throw new TournamentRulesException("Can't fit in any category");
+                return false;
             if (CheckELO(tournament, player))
-                throw new TournamentRulesException("Cant register cause to ELO");
+                return false;
             if (tournament.IsWomenOnly && player.Gender == UserGender.Male)
-                throw new TournamentRulesException("Only women can register");
+                return false;
             return true;
         }
 

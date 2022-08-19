@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Chess_Tournament_Tracker.DAL.Migrations
 {
     [DbContext(typeof(TournamentContext))]
-    [Migration("20220818125440_Chess_Tournament_Tracker")]
+    [Migration("20220819142406_Chess_Tournament_Tracker")]
     partial class Chess_Tournament_Tracker
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
