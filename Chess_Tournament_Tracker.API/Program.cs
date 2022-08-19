@@ -72,6 +72,12 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("Auth", policy => policy.RequireAuthenticatedUser());
     options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
 });
+builder.Services.AddCors(o => o.AddDefaultPolicy(b =>
+{
+    b.AllowAnyHeader();
+    b.AllowAnyMethod();
+    b.AllowAnyOrigin();
+}));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
