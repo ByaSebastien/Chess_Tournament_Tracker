@@ -27,6 +27,10 @@ namespace Chess_Tournament_Tracker.API.Controllers
                 _service.Insert(tournament);
                 return Ok(tournament);
             }
+            catch (TournamentRulesException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             catch (Exception)
             {
                 throw;

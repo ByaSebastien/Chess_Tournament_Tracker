@@ -28,7 +28,6 @@ namespace Chess_Tournament_Tracker.BLL.DTO.Tournaments
         [Range(0,3000)]
         public int? MaxELO { get; set; }
         public TournamentCategory Category { get; set; }
-        public TournamentStatus Status { get; set; } = TournamentStatus.WaitingPlayer;
         public bool IsWomenOnly { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndInscription { get; set; }

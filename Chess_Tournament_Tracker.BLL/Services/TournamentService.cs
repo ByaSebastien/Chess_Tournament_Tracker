@@ -12,13 +12,17 @@ namespace Chess_Tournament_Tracker.BLL.Services
     {
         private ITournamentRepository _tournamentRepository;
         private IUserRepository _userRepository;
-        public TournamentService(ITournamentRepository tournamentRepository, IUserRepository userRepository)
+        private IGameRepository _gameRepository;
+        public TournamentService(ITournamentRepository tournamentRepository, IUserRepository userRepository, IGameRepository gameRepository)
         {
             _tournamentRepository = tournamentRepository;
             _userRepository = userRepository;
+            _gameRepository = gameRepository;
         }
         public Tournament Insert(FormTournamentDTO insertTournament)
         {
+            if (insertTournament.EndInscription < DateTime.Now.AddDays(insertTournament.MinPlayer))
+                throw new TournamentRulesException($"end inscription date must be at least {insertTournament.MinPlayer} days after creation");
             Tournament tournament = insertTournament.ToDAL();
             tournament.Id = Guid.NewGuid();
             tournament.CreationDate = DateTime.Now;
@@ -42,8 +46,6 @@ namespace Chess_Tournament_Tracker.BLL.Services
             Tournament? tournament = _tournamentRepository.FindOne(id);
             if (tournament is null)
                 throw new KeyNotFoundException("Doesn't exist");
-            if (updateTournament.Status == TournamentStatus.InProgress)
-                throw new TournamentRulesException("Cannot update a tournament in progress");
             tournament = updateTournament.ToDAL(tournament);
             return _tournamentRepository.Update(tournament);
         }
@@ -104,13 +106,15 @@ namespace Chess_Tournament_Tracker.BLL.Services
                 throw new TournamentRulesException("Not enough players to start the tournament");
             if (tournament.EndInscription < DateTime.Now)
                 throw new TournamentRulesException("Inscription not ended");
-            List<User> users = tournament.Users.ToList();
+
+            IEnumerable<User> users = tournament.Users;
             GenerateGames(users, tournament);
-            users = tournament.Users.Reverse().ToList();
-            GenerateGames(users, tournament);
+            GenerateGames(users, tournament, true);
+
             tournament.CurrentRound = 1;
             tournament.UpdateDate = DateTime.Now;
             tournament.Status = TournamentStatus.InProgress;
+            _tournamentRepository.Update(tournament);
         }
         public void NextRound(Guid id)
         {
@@ -124,7 +128,7 @@ namespace Chess_Tournament_Tracker.BLL.Services
         }
         public TournamentWithScoreDTO GetTournamentWithPlayerResult(Guid tournamentId, int round)
         {
-            Tournament? tournament = _tournamentRepository.GetTournamentWithPlayerResult(tournamentId,round);
+            Tournament? tournament = _tournamentRepository.GetTournamentWithPlayerResult(tournamentId, round);
             if (tournament is null) throw new KeyNotFoundException("Tournament doesnt exist");
             TournamentWithScoreDTO tournamentWithScoreDTO = new TournamentWithScoreDTO(tournament);
             ICollection<PlayerScoreDTO> players = new List<PlayerScoreDTO>();
@@ -143,8 +147,10 @@ namespace Chess_Tournament_Tracker.BLL.Services
             tournamentWithScoreDTO.Players = players;
             return tournamentWithScoreDTO;
         }
-        private static void GenerateGames(List<User> users, Tournament tournament)
+        private void GenerateGames(IEnumerable<User> usersData, Tournament tournament, bool reverse = false)
         {
+            List<User> users = (!reverse) ? usersData.ToList() : usersData.Reverse().ToList();
+
             for (int currentRound = 1; currentRound <= (users.Count - 1); currentRound++)
             {
                 for (int currentMatch = 0; currentMatch < users.Count / 2; currentMatch++)
@@ -152,19 +158,20 @@ namespace Chess_Tournament_Tracker.BLL.Services
                     Game game = new Game
                     {
                         Id = Guid.NewGuid(),
-                        WhiteId = currentMatch % 2 == 0 ? users[currentMatch].Id : users[users.Count() - currentMatch].Id,
-                        BlackId = currentMatch % 2 == 0 ? users[users.Count() - currentMatch].Id : users[currentMatch].Id,
-                        TournamentId = tournament.Id,
+                        White = currentMatch % 2 == 0 ? users[currentMatch] : users[users.Count() - currentMatch - 1],
+                        Black = currentMatch % 2 == 0 ? users[users.Count() - currentMatch - 1] : users[currentMatch],
+                        CurrentTournament = tournament,
                         Result = GameResult.NotPlayed,
                         Round = currentRound
                     };
-                    tournament.Games.Add(game);
+                    _gameRepository.Insert(game);
+                    tournament.Games.Add(game);                    
                 }
                 users.Insert(1, users[users.Count - 1]);
                 users.RemoveAt(users.Count - 1);
             }
         }
-        private static bool CanRegister(User player, Tournament tournament)
+        private bool CanRegister(User player, Tournament tournament)
         {
             if (tournament.Status != TournamentStatus.WaitingPlayer)
                 return false;
@@ -183,14 +190,14 @@ namespace Chess_Tournament_Tracker.BLL.Services
             return true;
         }
 
-        private static int CalculAge(DateTime endInscription, DateTime birthDate)
+        private int CalculAge(DateTime endInscription, DateTime birthDate)
         {
             int age = endInscription.Year - birthDate.Year;
             if (birthDate > endInscription.AddYears(-age)) age--;
             return age;
         }
 
-        private static bool CheckCategories(Tournament tournament, User player)
+        private bool CheckCategories(Tournament tournament, User player)
         {
             bool flag = true;
             int age = CalculAge(tournament.EndInscription, player.Birthate);
@@ -203,7 +210,7 @@ namespace Chess_Tournament_Tracker.BLL.Services
             return flag;
         }
 
-        public static bool CheckELO(Tournament tournament, User player)
+        public bool CheckELO(Tournament tournament, User player)
         {
             if (tournament.MinELO is not null && player.ELO < tournament.MinELO)
                 return true;

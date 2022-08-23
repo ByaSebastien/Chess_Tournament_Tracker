@@ -21,7 +21,6 @@ namespace Chess_Tournament_Tracker.BLL.Mappers
             t.MinELO = tournament.MinELO;
             t.MaxELO = tournament.MaxELO;
             t.Category = tournament.Category;
-            t.Status = tournament.Status;
             t.IsWomenOnly = tournament.IsWomenOnly;
             t.StartDate = tournament.StartDate;
             t.EndInscription = tournament.EndInscription;
